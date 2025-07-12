@@ -2,20 +2,16 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { Search, Filter, X, MoreHorizontal } from "lucide-react";
+import { Search } from "lucide-react";
 import {
   IconMessageDots,
   IconCommand,
   IconChartDots3,
   IconScript,
   IconHandMove,
-  IconX,
 } from "@tabler/icons-react";
 
 const tasks = [
@@ -92,7 +88,6 @@ const filterCategories = [
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
   return (
     <div className="flex justify-center min-h-screen bg-background">
@@ -124,11 +119,7 @@ export default function Home() {
                         key={item}
                         className="block w-full text-left font-mono text-muted-foreground hover:text-foreground transition-colors tracking-wide cursor-pointer"
                         onClick={() => {
-                          setSelectedFilters((prev) =>
-                            prev.includes(item)
-                              ? prev.filter((f) => f !== item)
-                              : [...prev, item]
-                          );
+                          // Filter functionality to be implemented
                         }}
                       >
                         {item}
@@ -277,7 +268,6 @@ export default function Home() {
           <ScrollArea className="flex-1">
             <div>
               {tasks.map((task, index) => {
-                const Icon = task.icon;
                 return (
                   <button
                     key={task.id}
