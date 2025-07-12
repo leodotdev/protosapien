@@ -152,7 +152,7 @@
 .dark {
   --background: #111111;
   --foreground: oklch(0.9 0 0);
-  --card: oklch(0.12 0 0);
+  --card: #111111;
   --card-foreground: oklch(0.9 0 0);
   --popover: oklch(0.12 0 0);
   --popover-foreground: oklch(0.9 0 0);
@@ -166,7 +166,7 @@
   --accent-foreground: oklch(0.9 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: rgb(250 250 250 / 8%);
-  --input: oklch(0.12 0 0);
+  --input: #111111;
   --ring: oklch(0.55 0.25 265);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
