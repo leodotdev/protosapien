@@ -23,7 +23,12 @@ This project uses 9ui (https://www.9ui.dev/) - a modern React component library 
 
 When adding new 9ui components, use:
 ```bash
-npx 9ui@latest add [component-name]
+pnpm dlx shadcn@latest add https://9ui.dev/r/[component-name].json
+```
+
+Example:
+```bash
+pnpm dlx shadcn@latest add https://9ui.dev/r/card.json
 ```
 
 ### Development Heuristics
@@ -57,4 +62,8 @@ npx 9ui@latest add [component-name]
 
 - This project uses Next.js 15 with React 19
 - Turbopack is enabled for faster development builds
-- pnpm is the package manager
+- **Package Manager**: Always use `pnpm` for all package installations
+- **Icons**: 
+  - Large icons: Lucide React (already configured)
+  - Small icons: Tabler Icons (https://github.com/tabler/tabler-icons)
+- **Fonts**: Custom Helvetica Now Display and PP Supply Mono fonts in `/public/fonts/`

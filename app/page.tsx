@@ -1,103 +1,260 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Search, Filter, X, MoreHorizontal } from "lucide-react";
+import { 
+  IconMessageDots,
+  IconCommand,
+  IconChartDots3,
+  IconScript,
+  IconHandMove,
+  IconX
+} from "@tabler/icons-react";
+
+const tasks = [
+  {
+    id: 1,
+    title: "ChatCaps",
+    description: "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    languages: ["ENGLISH", "EASY"],
+    multiplier: 25,
+    icon: IconMessageDots
+  },
+  {
+    id: 2,
+    title: "Command Prompts",
+    description: "Create and refine Spanish-language commands, improving their accuracy and clarity.",
+    languages: ["SPANISH", "EASY"],
+    multiplier: 50,
+    icon: IconCommand
+  },
+  {
+    id: 3,
+    title: "Plot Points",
+    description: "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    languages: ["ENGLISH", "EASY"],
+    multiplier: 50,
+    icon: IconChartDots3
+  },
+  {
+    id: 4,
+    title: "Quick Scripts",
+    description: "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    languages: ["普通话", "EASY"],
+    multiplier: 50,
+    icon: IconScript
+  },
+  {
+    id: 5,
+    title: "Gesture Set",
+    description: "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    languages: ["ENGLISH", "EASY"],
+    multiplier: 5,
+    icon: IconHandMove
+  },
+  {
+    id: 6,
+    title: "ChatCaps",
+    description: "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    languages: ["MANDARIN", "EASY"],
+    multiplier: 50,
+    icon: IconMessageDots
+  },
+];
+
+const filterCategories = [
+  {
+    title: "ALL TYPES",
+    items: ["DATA COLLECTION", "DATA ANNOTATION", "QUALITY ASSESSMENT"]
+  },
+  {
+    title: "ALL DIFFICULTIES",
+    items: ["EASY", "INTERMEDIATE", "EXPERT"]
+  },
+  {
+    title: "ALL LANGUAGES",
+    items: ["ENGLISH", "SPANISH", "MANDARIN", "普通话"]
+  }
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="flex h-screen bg-background">
+      {/* Sidebar */}
+      <div className="w-64 border-r border-border bg-card/30">
+        <div className="p-4 border-b border-border">
+          <Image
+            src="/logo-light.svg"
+            alt="Logo"
+            width={32}
+            height={32}
+            className="h-6 w-6"
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <div className="p-4">
+          <h2 className="text-sm font-medium text-muted-foreground mb-4">Filter</h2>
+          <div className="space-y-8">
+            {filterCategories.map((category, idx) => (
+              <div key={idx}>
+                <h3 className="font-mono font-medium text-foreground mb-3 tracking-wider">{category.title}</h3>
+                <div className="space-y-2">
+                  {category.items.map((item) => (
+                    <button
+                      key={item}
+                      className="block w-full text-left font-mono text-muted-foreground hover:text-foreground transition-colors tracking-wide"
+                      onClick={() => {
+                        setSelectedFilters(prev => 
+                          prev.includes(item) 
+                            ? prev.filter(f => f !== item)
+                            : [...prev, item]
+                        );
+                      }}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="border-b border-border">
+          <div className="flex items-center justify-between px-4 py-3">
+            <div className="flex items-center gap-6">
+              <div className="flex items-center">
+                <Button variant="ghost" size="sm" className="font-mono px-3 h-8">
+                  TASKS
+                </Button>
+                <Button variant="ghost" size="sm" className="font-mono text-muted-foreground px-3 h-8">
+                  TOKENS
+                </Button>
+              </div>
+              <Separator orientation="vertical" className="h-5" />
+              <div className="flex items-center gap-3 font-mono text-muted-foreground">
+                <span>LVL 91</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 font-mono">
+                <Badge variant="secondary" className="bg-primary text-primary-foreground px-3 py-1 font-mono">
+                  1.5X
+                </Badge>
+                <div className="flex items-center gap-3 text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <div className="w-4 h-4" style={{ color: '#fafafa', opacity: 0.5 }}>
+                      <Image
+                        src="/icon-tokens-pending.svg"
+                        alt="Tokens Pending"
+                        width={16}
+                        height={16}
+                        className="w-full h-full"
+                        style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
+                      />
+                    </div>
+                    +32.10
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <div className="w-4 h-4" style={{ color: '#fafafa', opacity: 0.5 }}>
+                      <Image
+                        src="/icon-tokens.svg"
+                        alt="Tokens"
+                        width={16}
+                        height={16}
+                        className="w-full h-full"
+                        style={{ filter: 'brightness(0) saturate(100%) invert(100%)' }}
+                      />
+                    </div>
+                    67.89
+                  </span>
+                </div>
+                <Badge variant="secondary" className="bg-primary text-primary-foreground px-3 py-1 font-mono">
+                  10 DAY
+                </Badge>
+              </div>
+              <Button size="sm" variant="ghost" className="h-8 w-8 p-0 rounded-full overflow-hidden">
+                <Image
+                  src="/avatar-1.svg"
+                  alt="Profile"
+                  width={32}
+                  height={32}
+                  className="h-full w-full"
+                />
+              </Button>
+            </div>
+          </div>
+          
+          {/* Search Bar */}
+          <div className="px-4 py-3">
+            <div className="relative max-w-2xl">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search"
+                className="pl-10 bg-input border-0 font-mono h-9"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Tasks List */}
+        <ScrollArea className="flex-1">
+          <div className="divide-y divide-border">
+            {tasks.map((task) => {
+              const Icon = task.icon;
+              return (
+                <button
+                  key={task.id} 
+                  className="w-full px-6 py-5 hover:bg-accent/10 transition-all duration-200 cursor-pointer text-left group"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="text-[30px] leading-[36px] font-bold mb-2 group-hover:text-foreground/90">{task.title}</h3>
+                      <p className="text-sm text-muted-foreground max-w-2xl group-hover:text-muted-foreground/80">
+                        {task.description}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="flex gap-2">
+                        {task.languages.map((lang) => (
+                          <Badge 
+                            key={lang} 
+                            variant="secondary" 
+                            className="px-2 py-0.5 h-5 font-mono font-normal bg-muted/50 group-hover:bg-muted/70"
+                          >
+                            {lang}
+                          </Badge>
+                        ))}
+                      </div>
+                      <Badge 
+                        variant="default" 
+                        className="bg-primary text-primary-foreground px-3 py-0.5 h-6 font-mono group-hover:bg-primary/90"
+                      >
+                        +{task.multiplier}
+                      </Badge>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </ScrollArea>
+      </div>
     </div>
   );
 }
