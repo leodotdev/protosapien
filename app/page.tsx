@@ -5,14 +5,52 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/components/theme-provider";
+import { Search, X, User, Moon, Sun, LogOut } from "lucide-react";
 import {
   IconMessageDots,
   IconCommand,
   IconChartDots3,
   IconScript,
   IconHandMove,
+  IconCoin,
+  IconCoins,
 } from "@tabler/icons-react";
+
+// Header Badge Component
+const HeaderBadge = ({
+  children,
+  variant = "primary",
+}: {
+  children: React.ReactNode;
+  variant?: "primary" | "secondary";
+}) => {
+  const isPrimary = variant === "primary";
+  return (
+    <div
+      className={`font-mono text-[14px] leading-[20px] font-normal inline-flex items-center ${
+        isPrimary
+          ? "bg-primary text-primary-foreground"
+          : "text-muted-foreground"
+      }`}
+      style={{
+        paddingLeft: isPrimary ? "6px" : "0",
+        paddingRight: isPrimary ? "6px" : "0",
+        paddingTop: isPrimary ? "2px" : "0",
+        paddingBottom: isPrimary ? "3px" : "0",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const tasks = [
   {
@@ -88,36 +126,37 @@ const filterCategories = [
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className="flex justify-center min-h-screen bg-background">
       <div className="flex w-full max-w-[1280px] h-screen border-x border-border">
         {/* Sidebar */}
         <div className="w-64 border-r border-border">
-          <div className="p-6 border-b border-border gap-12 flex flex-col justify-center">
+          <div className="px-7 py-6 border-b border-border h-[358px] flex flex-col justify-between">
             <Image
-              src="/logo-light.svg"
+              src={theme === "dark" ? "/logo-light.svg" : "/logo-dark.svg"}
               alt="Logo"
               width={32}
               height={32}
-              className="h-6 w-6 mb-3"
+              className="h-6 w-6"
             />
-            <h2 className="text-[32px] leading-[36px] font-normal text-muted-foreground">
+            <h2 className="text-[30px] leading-[36px] font-bold text-muted-foreground">
               Filter
             </h2>
           </div>
-          <div className="p-6">
+          <div className="px-7 py-6">
             <div className="space-y-8">
               {filterCategories.map((category, idx) => (
                 <div key={idx}>
-                  <h3 className="font-mono font-medium text-foreground mb-3 tracking-wider">
+                  <h3 className="font-mono text-[14px] leading-[20px] font-normal text-foreground mb-3 tracking-wider">
                     {category.title}
                   </h3>
                   <div className="space-y-2">
                     {category.items.map((item) => (
                       <button
                         key={item}
-                        className="block w-full text-left font-mono text-muted-foreground hover:text-foreground transition-colors tracking-wide cursor-pointer"
+                        className="block w-full text-left font-mono text-[14px] leading-[20px] font-normal text-muted-foreground hover:text-foreground transition-colors tracking-wide cursor-pointer"
                         onClick={() => {
                           // Filter functionality to be implemented
                         }}
@@ -135,20 +174,20 @@ export default function Home() {
         {/* Main Content */}
         <div className="flex-1 flex flex-col">
           {/* Header */}
-          <div className="border-b border-border">
-            <div className="flex items-center justify-between px-6 h-[88px]">
+          <div className="border-b border-border flex flex-col">
+            <div className="flex items-center justify-between px-7 py-6">
               <div className="flex items-center gap-6">
-                <div className="flex items-center">
+                <div className="flex items-center gap-7">
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="font-mono h-auto text-foreground hover:bg-transparent rounded-none"
-                    style={{ 
-                      paddingLeft: '6px', 
-                      paddingRight: '6px', 
-                      paddingTop: '2px', 
-                      paddingBottom: '3px',
-                      backgroundColor: 'rgb(250 250 250 / 10%)'
+                    className="font-mono text-[14px] leading-[20px] font-normal h-auto text-foreground hover:bg-transparent rounded-none cursor-pointer"
+                    style={{
+                      paddingLeft: "6px",
+                      paddingRight: "6px",
+                      paddingTop: "2px",
+                      paddingBottom: "3px",
+                      backgroundColor: "rgb(250 250 250 / 10%)",
                     }}
                   >
                     TASKS
@@ -156,111 +195,191 @@ export default function Home() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="font-mono text-muted-foreground px-3 h-8 rounded-none"
+                    className="font-mono text-[14px] leading-[20px] font-normal text-muted-foreground px-3 h-8 rounded-none cursor-pointer"
                   >
                     TOKENS
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="font-mono text-muted-foreground px-3 h-8 rounded-none"
+                    className="font-mono text-[14px] leading-[20px] font-normal text-muted-foreground px-3 h-8 rounded-none cursor-pointer"
                   >
-                    LVL 91
+                    LVL 01
                   </Button>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3 font-mono">
-                  <Badge
-                    variant="secondary"
-                    className="bg-primary text-primary-foreground font-mono rounded-none h-auto"
-                    style={{ 
-                      paddingLeft: '6px', 
-                      paddingRight: '6px', 
-                      paddingTop: '2px', 
-                      paddingBottom: '3px'
-                    }}
-                  >
-                    1.5X
-                  </Badge>
-                  <div className="flex items-center gap-3 text-muted-foreground">
-                    <span className="flex items-center gap-1.5">
-                      <div
-                        className="w-4 h-4"
-                        style={{ color: "#fafafa", opacity: 0.5 }}
+              <div className="flex items-center gap-7">
+                <div className="flex items-center gap-7">
+                  <HeaderBadge variant="secondary">
+                    <IconCoin
+                      className="w-6 h-6"
+                      style={{
+                        color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                      }}
+                      stroke={1.25}
+                    />
+                    <span className="ml-1.5">
+                      <span
+                        style={{
+                          color: theme === "dark" ? "#fafafa" : "#111111",
+                        }}
                       >
-                        <Image
-                          src="/icon-tokens-pending.svg"
-                          alt="Tokens Pending"
-                          width={16}
-                          height={16}
-                          className="w-full h-full"
-                          style={{
-                            filter: "brightness(0) saturate(100%) invert(100%)",
-                          }}
-                        />
-                      </div>
-                      +32.10
+                        +32
+                      </span>
+                      .10
                     </span>
-                    <span className="flex items-center gap-1.5">
-                      <div
-                        className="w-4 h-4"
-                        style={{ color: "#fafafa", opacity: 0.5 }}
+                  </HeaderBadge>
+                  <HeaderBadge variant="secondary">
+                    <IconCoins
+                      className="w-6 h-6"
+                      style={{
+                        color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                      }}
+                      stroke={1.25}
+                    />
+                    <span className="ml-1.5">
+                      <span
+                        style={{
+                          color: theme === "dark" ? "#fafafa" : "#111111",
+                        }}
                       >
-                        <Image
-                          src="/icon-tokens.svg"
-                          alt="Tokens"
-                          width={16}
-                          height={16}
-                          className="w-full h-full"
-                          style={{
-                            filter: "brightness(0) saturate(100%) invert(100%)",
-                          }}
-                        />
-                      </div>
-                      67.89
+                        67
+                      </span>
+                      .89
                     </span>
-                  </div>
-                  <Badge
-                    variant="secondary"
-                    className="bg-primary text-primary-foreground font-mono rounded-none h-auto"
-                    style={{ 
-                      paddingLeft: '6px', 
-                      paddingRight: '6px', 
-                      paddingTop: '2px', 
-                      paddingBottom: '3px'
-                    }}
-                  >
-                    10 DAY
-                  </Badge>
+                  </HeaderBadge>
+                  <HeaderBadge variant="primary">1.5X</HeaderBadge>
+                  <HeaderBadge variant="secondary">
+                    <div
+                      className="w-8 h-8 rounded-full"
+                      style={{
+                        backgroundColor:
+                          theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                      }}
+                    />
+                    <span className="ml-1.5">
+                      <span
+                        style={{
+                          color: theme === "dark" ? "#fafafa" : "#111111",
+                        }}
+                      >
+                        10
+                      </span>{" "}
+                      DAY
+                    </span>
+                  </HeaderBadge>
                 </div>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="h-8 w-8 p-0 rounded-none overflow-hidden"
-                >
-                  <Image
-                    src="/avatar-1.svg"
-                    alt="Profile"
-                    width={32}
-                    height={32}
-                    className="h-full w-full"
-                  />
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger
+                    className="h-8 w-8 p-0 rounded-full overflow-hidden relative hover:opacity-80 transition-opacity cursor-pointer"
+                    style={{
+                      boxShadow:
+                        theme === "dark"
+                          ? "inset 0 0 0 1px rgb(250 250 250 / 8%)"
+                          : "inset 0 0 0 1px rgb(17 17 17 / 8%)",
+                    }}
+                  >
+                    <Image
+                      src="/avatar-1.svg"
+                      alt="Profile"
+                      width={32}
+                      height={32}
+                      className="h-full w-full"
+                    />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="w-48 rounded-none shadow-none"
+                  >
+                    <DropdownMenuItem
+                      className="cursor-pointer rounded-none text-[14px] leading-[20px] font-normal"
+                      onClick={() => {
+                        // Placeholder for profile navigation
+                        console.log("Navigate to profile");
+                      }}
+                    >
+                      <User
+                        className="mr-2 h-6 w-6"
+                        style={{
+                          color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                        }}
+                        strokeWidth={1.25}
+                      />
+                      Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="cursor-pointer rounded-none text-[14px] leading-[20px] font-normal"
+                      onClick={() =>
+                        setTheme(theme === "dark" ? "light" : "dark")
+                      }
+                    >
+                      {theme === "dark" ? (
+                        <Sun
+                          className="mr-2 h-6 w-6"
+                          style={{
+                            color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                          }}
+                          strokeWidth={1.25}
+                        />
+                      ) : (
+                        <Moon
+                          className="mr-2 h-6 w-6"
+                          style={{
+                            color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                          }}
+                          strokeWidth={1.25}
+                        />
+                      )}
+                      {theme === "dark" ? "Light Mode" : "Dark Mode"}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      className="cursor-pointer rounded-none text-red-500 focus:text-red-500 text-[14px] leading-[20px] font-normal"
+                      onClick={() => {
+                        // Placeholder for logout
+                        console.log("Logout");
+                      }}
+                    >
+                      <LogOut
+                        className="mr-2 h-6 w-6 text-red-500"
+                        strokeWidth={1.25}
+                      />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
             </div>
 
             {/* Search Bar */}
-            <div className="px-6 py-6 border-b border-border">
-              <div className="relative">
-                <Search className="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-muted-foreground" />
-                <input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search"
-                  className="w-full bg-transparent text-[32px] leading-[36px] text-muted-foreground placeholder:text-muted-foreground focus:outline-none pr-16"
+            <div className="flex-1 relative">
+              {searchQuery ? (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 z-10 cursor-pointer transition-colors"
+                  style={{
+                    color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                  }}
+                >
+                  <X className="w-8 h-8" strokeWidth={2} />
+                </button>
+              ) : (
+                <Search
+                  className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 pointer-events-none z-10"
+                  style={{
+                    color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                  }}
+                  strokeWidth={2}
                 />
-              </div>
+              )}
+              <input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search"
+                className={`w-full h-full px-7 py-6 bg-transparent text-[30px] leading-[36px] font-bold placeholder:text-muted-foreground focus:outline-none pr-16 cursor-text ${
+                  searchQuery ? "text-[#fafafa]" : "text-muted-foreground"
+                }`}
+              />
             </div>
           </div>
 
@@ -271,7 +390,7 @@ export default function Home() {
                 return (
                   <button
                     key={task.id}
-                    className={`relative w-full px-6 py-5 hover:bg-[#242424] transition-all duration-200 cursor-pointer text-left ${
+                    className={`relative w-full px-7 py-6 hover:bg-[rgb(17_17_17_/_8%)] dark:hover:bg-[#242424] transition-all duration-200 cursor-pointer text-left ${
                       index !== tasks.length - 1
                         ? "border-b border-border hover:border-transparent"
                         : ""
@@ -282,7 +401,7 @@ export default function Home() {
                         <h3 className="text-[30px] leading-[36px] font-bold mb-2">
                           {task.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground max-w-2xl">
+                        <p className="text-[14px] leading-[20px] font-normal text-muted-foreground max-w-2xl">
                           {task.description}
                         </p>
                       </div>
@@ -292,14 +411,20 @@ export default function Home() {
                             <Badge
                               key={lang}
                               variant="secondary"
-                              className="font-mono font-normal rounded-none h-auto"
-                              style={{ 
-                                paddingLeft: '6px', 
-                                paddingRight: '6px', 
-                                paddingTop: '2px', 
-                                paddingBottom: '3px',
-                                backgroundColor: lang === 'EASY' ? 'rgb(50 50 50)' : 'rgb(30 30 30)',
-                                color: lang === 'EASY' ? 'rgb(150 255 0)' : 'rgb(255 255 255)'
+                              className="font-mono text-[14px] leading-[20px] font-normal rounded-none h-auto"
+                              style={{
+                                paddingLeft: "6px",
+                                paddingRight: "6px",
+                                paddingTop: "2px",
+                                paddingBottom: "3px",
+                                backgroundColor:
+                                  lang === "EASY"
+                                    ? "rgb(50 50 50)"
+                                    : "rgb(30 30 30)",
+                                color:
+                                  lang === "EASY"
+                                    ? "rgb(150 255 0)"
+                                    : "rgb(255 255 255)",
                               }}
                             >
                               {lang}
@@ -308,12 +433,12 @@ export default function Home() {
                         </div>
                         <Badge
                           variant="default"
-                          className="bg-primary text-primary-foreground font-mono rounded-none h-auto"
-                          style={{ 
-                            paddingLeft: '6px', 
-                            paddingRight: '6px', 
-                            paddingTop: '2px', 
-                            paddingBottom: '3px'
+                          className="bg-primary text-primary-foreground font-mono text-[14px] leading-[20px] font-normal rounded-none h-auto"
+                          style={{
+                            paddingLeft: "6px",
+                            paddingRight: "6px",
+                            paddingTop: "2px",
+                            paddingBottom: "3px",
                           }}
                         >
                           +{task.multiplier}
