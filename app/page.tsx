@@ -121,6 +121,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["ENGLISH", "EASY"],
     multiplier: 25,
+    date: "Dec 15",
     icon: IconMessageDots,
   },
   {
@@ -130,6 +131,7 @@ const tasks = [
       "Create and refine Spanish-language commands, improving their accuracy and clarity.",
     languages: ["SPANISH", "EASY"],
     multiplier: 50,
+    date: "Dec 14",
     icon: IconCommand,
   },
   {
@@ -139,6 +141,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["ENGLISH", "EASY"],
     multiplier: 50,
+    date: "Dec 13",
     icon: IconChartDots3,
   },
   {
@@ -148,6 +151,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["普通话", "EASY"],
     multiplier: 50,
+    date: "Dec 12",
     icon: IconScript,
   },
   {
@@ -157,6 +161,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["ENGLISH", "EASY"],
     multiplier: 5,
+    date: "Dec 11",
     icon: IconHandMove,
   },
   {
@@ -166,6 +171,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["MANDARIN", "EASY"],
     multiplier: 50,
+    date: "Dec 10",
     icon: IconMessageDots,
   },
 ];
@@ -453,9 +459,11 @@ export default function Home() {
                           </span>
                         </div>
                         <User
-                          className="ml-2 h-4 w-4"
+                          className="ml-2"
                           style={{
                             color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                            width: "16px",
+                            height: "16px",
                           }}
                           strokeWidth={1}
                         />
@@ -471,17 +479,21 @@ export default function Home() {
                         </span>
                         {theme === "dark" ? (
                           <Sun
-                            className="ml-2 h-4 w-4"
+                            className="ml-2"
                             style={{
-                              color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                              color: "#5c5c5c",
+                              width: "16px",
+                              height: "16px",
                             }}
                             strokeWidth={1}
                           />
                         ) : (
                           <Moon
-                            className="ml-2 h-4 w-4"
+                            className="ml-2"
                             style={{
-                              color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                              color: "#b2b2b2",
+                              width: "16px",
+                              height: "16px",
                             }}
                             strokeWidth={1}
                           />
@@ -540,7 +552,11 @@ export default function Home() {
                       >
                         <span style={{ letterSpacing: "0.01em" }}>Logout</span>
                         <LogOut
-                          className="ml-2 h-4 w-4 text-red-500"
+                          className="ml-2 text-red-500"
+                          style={{
+                            width: "16px",
+                            height: "16px",
+                          }}
                           strokeWidth={1}
                         />
                       </DropdownMenuItem>
@@ -608,6 +624,9 @@ export default function Home() {
                         </div>
                         <div className="flex items-center gap-3">
                           <div className="flex gap-2">
+                            <CustomBadge variant="secondary">
+                              {task.date}
+                            </CustomBadge>
                             {task.languages.map((lang) => (
                               <Tooltip key={lang}>
                                 <TooltipTrigger asChild>
