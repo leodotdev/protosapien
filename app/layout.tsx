@@ -14,7 +14,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="font-sans antialiased">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                const theme = localStorage.getItem('theme') || 'dark';
+                if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                }
+              } catch {}
+            `,
+          }}
+        />
+      </head>
+      <body className="font-sans antialiased bg-background">
         <ThemeProvider defaultTheme="dark">
           <div className="Root">{children}</div>
         </ThemeProvider>

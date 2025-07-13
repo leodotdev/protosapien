@@ -213,3 +213,14 @@
     font-family: "PP Supply Mono", ui-monospace, monospace !important;
   }
 }
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+}

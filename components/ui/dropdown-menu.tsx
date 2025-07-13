@@ -80,7 +80,7 @@ function DropdownMenuItem({
 			data-inset={inset}
 			data-variant={variant}
 			className={cn(
-				"focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive-foreground data-[variant=destructive]:*:[svg]:!text-destructive focus:data-[variant=destructive]:*:[svg]:!text-destructive-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-[14px] leading-[20px] font-normal outline-hidden transition-all select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:transition-all [&_svg:not([class*='size-'])]:size-6",
+				"focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive-foreground data-[variant=destructive]:*:[svg]:!text-destructive focus:data-[variant=destructive]:*:[svg]:!text-destructive-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-[14px] leading-[18px] font-normal outline-hidden transition-all select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:transition-all [&_svg:not([class*='size-'])]:size-6",
 				className
 			)}
 			{...props}
@@ -129,7 +129,7 @@ function DropdownMenuLabel({
 			data-slot="dropdown-menu-label"
 			data-inset={inset}
 			className={cn(
-				"px-2 py-1.5 text-[14px] leading-[20px] font-normal data-[inset]:pl-8",
+				"px-2 py-1.5 text-[14px] leading-[18px] font-normal data-[inset]:pl-8",
 				className
 			)}
 			{...props}
