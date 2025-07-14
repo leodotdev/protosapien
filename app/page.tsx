@@ -40,22 +40,28 @@ const CustomBadge = React.forwardRef<
     variant?:
       | "primary"
       | "secondary"
+      | "ghost"
       | "language"
       | "difficulty"
-      | "multiplier";
+      | "multiplier"
+      | "date";
     style?: React.CSSProperties;
   } & React.HTMLAttributes<HTMLDivElement>
 >(({ children, variant = "primary", style, ...props }, ref) => {
   const getStyles = () => {
+    const basePadding = {
+      paddingLeft: "6px",
+      paddingRight: "6px",
+      paddingTop: "2px",
+      paddingBottom: "3px",
+    };
+
     switch (variant) {
       case "primary":
         return {
           backgroundColor: "rgb(var(--primary))",
           color: "rgb(var(--primary-foreground))",
-          paddingLeft: "6px",
-          paddingRight: "6px",
-          paddingTop: "2px",
-          paddingBottom: "3px",
+          ...basePadding,
         };
       case "secondary":
         return {
@@ -65,32 +71,34 @@ const CustomBadge = React.forwardRef<
           paddingTop: "0",
           paddingBottom: "0",
         };
+      case "ghost":
+        return {
+          color: "rgb(var(--muted-foreground))",
+          ...basePadding,
+        };
       case "language":
         return {
           backgroundColor: "rgba(164, 213, 255, 0.1)",
           color: "#A4D5FF",
-          paddingLeft: "6px",
-          paddingRight: "6px",
-          paddingTop: "2px",
-          paddingBottom: "3px",
+          ...basePadding,
         };
       case "difficulty":
         return {
           backgroundColor: "rgba(163, 230, 53, 0.1)",
           color: "#A3E635",
-          paddingLeft: "6px",
-          paddingRight: "6px",
-          paddingTop: "2px",
-          paddingBottom: "3px",
+          ...basePadding,
         };
       case "multiplier":
         return {
-          backgroundColor: "rgb(var(--primary))",
-          color: "rgb(var(--primary-foreground))",
-          paddingLeft: "6px",
-          paddingRight: "6px",
-          paddingTop: "2px",
-          paddingBottom: "3px",
+          backgroundColor: "rgba(0, 0, 255, 0.64)",
+          color: "#fafafa",
+          ...basePadding,
+        };
+      case "date":
+        return {
+          backgroundColor: "rgba(250, 250, 250, 0.04)",
+          color: "rgb(var(--foreground))",
+          ...basePadding,
         };
       default:
         return {};
@@ -100,7 +108,7 @@ const CustomBadge = React.forwardRef<
   return (
     <div
       ref={ref}
-      className="font-mono text-[14px] leading-[18px] font-normal inline-flex items-center cursor-pointer rounded-[2px]"
+      className="font-mono text-[14px] leading-[18px] font-normal inline-flex items-center cursor-pointer rounded-[2px] gap-1"
       style={{
         ...getStyles(),
         ...style,
@@ -121,7 +129,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["ENGLISH", "EASY"],
     multiplier: 25,
-    date: "Dec 15",
+    date: "DEC 15",
     icon: IconMessageDots,
   },
   {
@@ -131,7 +139,7 @@ const tasks = [
       "Create and refine Spanish-language commands, improving their accuracy and clarity.",
     languages: ["SPANISH", "EASY"],
     multiplier: 50,
-    date: "Dec 14",
+    date: "DEC 14",
     icon: IconCommand,
   },
   {
@@ -141,7 +149,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["ENGLISH", "EASY"],
     multiplier: 50,
-    date: "Dec 13",
+    date: "DEC 13",
     icon: IconChartDots3,
   },
   {
@@ -151,7 +159,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["普通话", "EASY"],
     multiplier: 50,
-    date: "Dec 12",
+    date: "DEC 12",
     icon: IconScript,
   },
   {
@@ -161,7 +169,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["ENGLISH", "EASY"],
     multiplier: 5,
-    date: "Dec 11",
+    date: "DEC 11",
     icon: IconHandMove,
   },
   {
@@ -171,7 +179,7 @@ const tasks = [
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
     languages: ["MANDARIN", "EASY"],
     multiplier: 50,
-    date: "Dec 10",
+    date: "DEC 10",
     icon: IconMessageDots,
   },
 ];
@@ -199,7 +207,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
-    }, 4000); // Force 4 seconds loading state
+    }, 2000); // Force 2 seconds loading state
 
     return () => clearTimeout(timer);
   }, []);
@@ -386,15 +394,7 @@ export default function Home() {
                     </Tooltip>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <CustomBadge
-                          variant="primary"
-                          style={{
-                            backgroundColor: "rgba(0, 0, 255, 0.64)",
-                            color: "#fafafa",
-                          }}
-                        >
-                          1.5X
-                        </CustomBadge>
+                        <CustomBadge variant="multiplier">1.5X</CustomBadge>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Multiplier</p>
@@ -623,46 +623,44 @@ export default function Home() {
                           </p>
                         </div>
                         <div className="flex items-center gap-3">
-                          <div className="flex gap-2">
-                            <CustomBadge variant="secondary">
-                              {task.date}
-                            </CustomBadge>
-                            {task.languages.map((lang) => (
-                              <Tooltip key={lang}>
-                                <TooltipTrigger asChild>
-                                  <CustomBadge
-                                    variant={
-                                      lang === "EASY" ||
-                                      lang === "INTERMEDIATE" ||
-                                      lang === "EXPERT"
-                                        ? "difficulty"
-                                        : "language"
-                                    }
-                                  >
-                                    {lang}
-                                  </CustomBadge>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>
-                                    {lang === "EASY" ||
-                                    lang === "INTERMEDIATE" ||
-                                    lang === "EXPERT"
-                                      ? "Difficulty"
-                                      : "Language"}
-                                  </p>
-                                </TooltipContent>
-                              </Tooltip>
-                            ))}
-                          </div>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <CustomBadge
-                                variant="primary"
-                                style={{
-                                  backgroundColor: "rgba(0, 0, 255, 0.64)",
-                                  color: "#fafafa",
-                                }}
-                              >
+                              <CustomBadge variant="date">{task.date}</CustomBadge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Expires</p>
+                            </TooltipContent>
+                          </Tooltip>
+                          {task.languages.map((lang) => (
+                            <Tooltip key={lang}>
+                              <TooltipTrigger asChild>
+                                <CustomBadge
+                                  variant={
+                                    lang === "EASY" ||
+                                    lang === "INTERMEDIATE" ||
+                                    lang === "EXPERT"
+                                      ? "difficulty"
+                                      : "language"
+                                  }
+                                >
+                                  {lang}
+                                </CustomBadge>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>
+                                  {lang === "EASY" ||
+                                  lang === "INTERMEDIATE" ||
+                                  lang === "EXPERT"
+                                    ? "Difficulty"
+                                    : "Language"}
+                                </p>
+                              </TooltipContent>
+                            </Tooltip>
+                          ))}
+
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <CustomBadge variant="multiplier">
                                 <Image
                                   src="/icon-spark-filled.svg"
                                   alt="Spark"

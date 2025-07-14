@@ -5,10 +5,16 @@ export default function LoadingSkeleton() {
     <div className="flex justify-center min-h-screen bg-background">
       <div className="flex w-full max-w-[1280px] h-screen border-x border-border">
         {/* Sidebar Skeleton */}
-        <div className="w-64 border-r border-border">
-          <div className="px-7 py-6 border-b border-border h-[358px] flex flex-col justify-between">
-            <Skeleton className="h-6 w-6" />
-            <Skeleton className="h-9 w-20" />
+        <div className="w-64 border-r border-border flex flex-col">
+          <div className="flex flex-col gap-24">
+            <div className="px-7 py-6">
+              <div className="p-1">
+                <Skeleton className="h-6 w-6" />
+              </div>
+            </div>
+            <div className="px-7 py-6 border-b border-border">
+              <Skeleton className="h-9 w-20" />
+            </div>
           </div>
           <div className="px-7 py-6">
             <div className="space-y-8">
@@ -29,7 +35,7 @@ export default function LoadingSkeleton() {
         {/* Main Content Skeleton */}
         <div className="flex-1 flex flex-col">
           {/* Header Skeleton */}
-          <div className="border-b border-border flex flex-col">
+          <div className="border-b border-border flex flex-col gap-24">
             <div className="flex items-center justify-between px-7 py-6">
               <div className="flex items-center gap-7">
                 <div className="flex items-center gap-7">
@@ -40,7 +46,7 @@ export default function LoadingSkeleton() {
               </div>
               <div className="flex items-center gap-7">
                 <div className="flex items-center gap-7">
-                  {[1, 2, 3, 4].map((i) => (
+                  {[1, 2, 3, 4, 5].map((i) => (
                     <Skeleton key={i} className="h-6 w-20" />
                   ))}
                 </div>
@@ -49,7 +55,7 @@ export default function LoadingSkeleton() {
             </div>
 
             {/* Search Bar Skeleton */}
-            <div className="flex-1 relative px-7 py-6">
+            <div className="px-7 py-6">
               <Skeleton className="h-9 w-32" />
             </div>
           </div>
@@ -70,10 +76,9 @@ export default function LoadingSkeleton() {
                       <Skeleton className="h-5 w-96" />
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="flex gap-2">
-                        <Skeleton className="h-6 w-20" />
-                        <Skeleton className="h-6 w-16" />
-                      </div>
+                      <Skeleton className="h-6 w-16" />
+                      <Skeleton className="h-6 w-20" />
+                      <Skeleton className="h-6 w-16" />
                       <Skeleton className="h-6 w-12" />
                     </div>
                   </div>
