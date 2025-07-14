@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Meter } from "@/components/ui/meter";
@@ -62,7 +61,7 @@ const questions = [
   },
 ];
 
-export default function TaskPage({ params }: { params: { id: string } }) {
+export default function TaskPage() {
   const router = useRouter();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -102,7 +101,7 @@ export default function TaskPage({ params }: { params: { id: string } }) {
         <DialogContent className="sm:max-w-[425px] rounded-[2px]">
           <DialogHeader>
             <DialogTitle className="text-[30px] leading-[36px] font-bold">
-              Verify you're human
+              Verify you&apos;re human
             </DialogTitle>
             <DialogDescription className="text-[14px] leading-[18px] pt-2">
               Please complete this verification to access the task. This helps us maintain quality and prevent automated responses.

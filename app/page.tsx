@@ -129,7 +129,9 @@ const tasks = [
     title: "ChatCaps",
     description:
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    languages: ["ENGLISH", "EASY"],
+    type: "DATA ANNOTATION",
+    difficulty: "EASY",
+    languages: ["ENGLISH"],
     multiplier: 25,
     date: "DEC 15",
     icon: IconMessageDots,
@@ -139,7 +141,9 @@ const tasks = [
     title: "Command Prompts",
     description:
       "Create and refine Spanish-language commands, improving their accuracy and clarity.",
-    languages: ["SPANISH", "EASY"],
+    type: "DATA COLLECTION",
+    difficulty: "EASY",
+    languages: ["SPANISH"],
     multiplier: 50,
     date: "DEC 14",
     icon: IconCommand,
@@ -149,7 +153,9 @@ const tasks = [
     title: "Plot Points",
     description:
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    languages: ["ENGLISH", "EASY"],
+    type: "QUALITY ASSESSMENT",
+    difficulty: "INTERMEDIATE",
+    languages: ["ENGLISH"],
     multiplier: 50,
     date: "DEC 13",
     icon: IconChartDots3,
@@ -159,7 +165,9 @@ const tasks = [
     title: "Quick Scripts",
     description:
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    languages: ["普通话", "EASY"],
+    type: "DATA COLLECTION",
+    difficulty: "EASY",
+    languages: ["普通话"],
     multiplier: 50,
     date: "DEC 12",
     icon: IconScript,
@@ -169,7 +177,9 @@ const tasks = [
     title: "Gesture Set",
     description:
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    languages: ["ENGLISH", "EASY"],
+    type: "DATA ANNOTATION",
+    difficulty: "EXPERT",
+    languages: ["ENGLISH"],
     multiplier: 5,
     date: "DEC 11",
     icon: IconHandMove,
@@ -179,7 +189,9 @@ const tasks = [
     title: "ChatCaps",
     description:
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    languages: ["MANDARIN", "EASY"],
+    type: "DATA ANNOTATION",
+    difficulty: "EASY",
+    languages: ["MANDARIN"],
     multiplier: 50,
     date: "DEC 10",
     icon: IconMessageDots,
@@ -207,6 +219,11 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
+  // Filter states - empty arrays mean "ALL" is selected
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
@@ -214,6 +231,74 @@ export default function Home() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Filter logic - clicking "ALL" clears selections, otherwise toggle multi-selection
+  const handleFilterClick = (
+    category: "type" | "difficulty" | "language",
+    value: string
+  ) => {
+    if (category === "type") {
+      if (value === "ALL TYPES") {
+        setSelectedTypes([]);
+      } else {
+        setSelectedTypes(prev => 
+          prev.includes(value) 
+            ? prev.filter(t => t !== value)
+            : [...prev, value]
+        );
+      }
+    } else if (category === "difficulty") {
+      if (value === "ALL DIFFICULTIES") {
+        setSelectedDifficulties([]);
+      } else {
+        setSelectedDifficulties(prev => 
+          prev.includes(value) 
+            ? prev.filter(d => d !== value)
+            : [...prev, value]
+        );
+      }
+    } else if (category === "language") {
+      if (value === "ALL LANGUAGES") {
+        setSelectedLanguages([]);
+      } else {
+        setSelectedLanguages(prev => 
+          prev.includes(value) 
+            ? prev.filter(l => l !== value)
+            : [...prev, value]
+        );
+      }
+    }
+  };
+
+  // Filter tasks based on selected filters
+  const filteredTasks = tasks.filter((task) => {
+    // Check type filter (empty array means show all)
+    if (selectedTypes.length > 0 && !selectedTypes.includes(task.type)) {
+      return false;
+    }
+
+    // Check difficulty filter (empty array means show all)
+    if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(task.difficulty)) {
+      return false;
+    }
+
+    // Check language filter (empty array means show all)
+    if (selectedLanguages.length > 0 && 
+        !task.languages.some(lang => selectedLanguages.includes(lang))) {
+      return false;
+    }
+
+    // Check search query
+    if (
+      searchQuery &&
+      !task.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      !task.description.toLowerCase().includes(searchQuery.toLowerCase())
+    ) {
+      return false;
+    }
+
+    return true;
+  });
 
   if (!mounted) {
     return <LoadingSkeleton />;
@@ -241,32 +326,67 @@ export default function Home() {
               </div>
               <div className="px-7 py-6 border-b border-border">
                 <h2 className="text-[30px] leading-[36px] font-bold text-muted-foreground">
-                  Filter
+                  Filter{" "}
+                  {(selectedTypes.length > 0 ||
+                    selectedDifficulties.length > 0 ||
+                    selectedLanguages.length > 0) && (
+                    <span className="font-mono text-[14px] leading-[18px] font-normal text-primary ml-2">
+                      (
+                      {selectedTypes.length + selectedDifficulties.length + selectedLanguages.length}
+                      )
+                    </span>
+                  )}
                 </h2>
               </div>
             </div>
             <div className="px-7 py-6">
               <div className="flex flex-col gap-8">
-                {filterCategories.map((category, idx) => (
-                  <div key={idx} className="flex flex-col gap-3">
-                    <h3 className="font-mono text-[14px] leading-[18px] font-normal text-foreground tracking-wider">
-                      {category.title}
-                    </h3>
-                    <div className="flex flex-col gap-2">
-                      {category.items.map((item) => (
+                {filterCategories.map((category, idx) => {
+                  const categoryType =
+                    idx === 0 ? "type" : idx === 1 ? "difficulty" : "language";
+                  const selectedItems =
+                    categoryType === "type"
+                      ? selectedTypes
+                      : categoryType === "difficulty"
+                      ? selectedDifficulties
+                      : selectedLanguages;
+
+                  return (
+                    <div key={idx} className="flex flex-col gap-2">
+                      {/* Add the "ALL" option first */}
                         <button
-                          key={item}
-                          className="flex items-center font-mono text-[14px] leading-[18px] font-normal text-muted-foreground hover:text-foreground transition-colors tracking-wide cursor-pointer"
-                          onClick={() => {
-                            // Filter functionality to be implemented
-                          }}
+                          className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                            selectedItems.length === 0
+                              ? "text-foreground"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                          onClick={() =>
+                            handleFilterClick(categoryType, category.title)
+                          }
                         >
-                          {item}
+                          {category.title}
                         </button>
-                      ))}
+                        {category.items.map((item) => {
+                          const isSelected = selectedItems.includes(item);
+                          return (
+                            <button
+                              key={item}
+                              className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                                isSelected
+                                  ? "text-foreground"
+                                  : "text-muted-foreground hover:text-foreground"
+                              }`}
+                              onClick={() =>
+                                handleFilterClick(categoryType, item)
+                              }
+                            >
+                              {item}
+                            </button>
+                          );
+                        })}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -926,38 +1046,64 @@ export default function Home() {
             {/* Mobile Filters */}
             <div className="lg:hidden border-b border-border px-7 py-6">
               <div className="flex flex-col gap-8">
-                {filterCategories.map((category, idx) => (
-                  <div key={idx} className="flex flex-col gap-3">
-                    <h3 className="font-mono text-[14px] leading-[18px] font-normal text-foreground tracking-wider">
-                      {category.title}
-                    </h3>
-                    <div className="flex flex-col gap-2">
-                      {category.items.map((item) => (
+                {filterCategories.map((category, idx) => {
+                  const categoryType =
+                    idx === 0 ? "type" : idx === 1 ? "difficulty" : "language";
+                  const selectedItems =
+                    categoryType === "type"
+                      ? selectedTypes
+                      : categoryType === "difficulty"
+                      ? selectedDifficulties
+                      : selectedLanguages;
+
+                  return (
+                    <div key={idx} className="flex flex-col gap-2">
+                      {/* Add the "ALL" option first */}
                         <button
-                          key={item}
-                          className="flex items-center font-mono text-[14px] leading-[18px] font-normal text-muted-foreground hover:text-foreground transition-colors tracking-wide cursor-pointer"
-                          onClick={() => {
-                            // Filter functionality to be implemented
-                          }}
+                          className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                            selectedItems.length === 0
+                              ? "text-foreground"
+                              : "text-muted-foreground hover:text-foreground"
+                          }`}
+                          onClick={() =>
+                            handleFilterClick(categoryType, category.title)
+                          }
                         >
-                          {item}
+                          {category.title}
                         </button>
-                      ))}
+                        {category.items.map((item) => {
+                          const isSelected = selectedItems.includes(item);
+                          return (
+                            <button
+                              key={item}
+                              className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                                isSelected
+                                  ? "text-foreground"
+                                  : "text-muted-foreground hover:text-foreground"
+                              }`}
+                              onClick={() =>
+                                handleFilterClick(categoryType, item)
+                              }
+                            >
+                              {item}
+                            </button>
+                          );
+                        })}
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
             {/* Tasks List */}
             <ScrollArea className="flex-1">
               <div>
-                {tasks.map((task, index) => {
+                {filteredTasks.map((task, index) => {
                   return (
                     <button
                       key={task.id}
                       className={`relative w-full px-7 py-6 hover:bg-[rgb(17_17_17_/_8%)] dark:hover:bg-[#242424] transition-all duration-200 cursor-pointer text-left ${
-                        index !== tasks.length - 1
+                        index !== filteredTasks.length - 1
                           ? "border-b border-border hover:border-transparent"
                           : ""
                       }`}
@@ -986,29 +1132,25 @@ export default function Home() {
                               <p>Expires</p>
                             </TooltipContent>
                           </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <CustomBadge variant="difficulty">
+                                {task.difficulty}
+                              </CustomBadge>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Difficulty</p>
+                            </TooltipContent>
+                          </Tooltip>
                           {task.languages.map((lang) => (
                             <Tooltip key={lang}>
                               <TooltipTrigger asChild>
-                                <CustomBadge
-                                  variant={
-                                    lang === "EASY" ||
-                                    lang === "INTERMEDIATE" ||
-                                    lang === "EXPERT"
-                                      ? "difficulty"
-                                      : "language"
-                                  }
-                                >
+                                <CustomBadge variant="language">
                                   {lang}
                                 </CustomBadge>
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>
-                                  {lang === "EASY" ||
-                                  lang === "INTERMEDIATE" ||
-                                  lang === "EXPERT"
-                                    ? "Difficulty"
-                                    : "Language"}
-                                </p>
+                                <p>Language</p>
                               </TooltipContent>
                             </Tooltip>
                           ))}
