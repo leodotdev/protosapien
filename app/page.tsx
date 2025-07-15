@@ -30,6 +30,8 @@ import {
   IconCoins,
   IconCashBanknote,
   IconMenu2,
+  IconLayoutGrid,
+  IconList,
 } from "@tabler/icons-react";
 import FlameGradientCSS from "@/components/flame-gradient-css";
 import LoadingSkeleton from "@/components/loading-skeleton";
@@ -287,6 +289,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
   const [showWalletDialog, setShowWalletDialog] = useState(false);
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const { theme, setTheme } = useTheme();
 
   // Filter states - empty arrays mean "ALL" is selected
@@ -1153,30 +1156,46 @@ export default function Home() {
 
               {/* Search Bar */}
               <div className="flex-1 relative px-7 py-6">
-                {searchQuery ? (
+                <div className="flex items-center gap-2 absolute right-6 top-1/2 -translate-y-1/2 z-10">
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="w-8 h-8 cursor-pointer transition-colors"
+                      style={{
+                        color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                      }}
+                    >
+                      <X className="w-8 h-8" strokeWidth={2} />
+                    </button>
+                  )}
+                  {!searchQuery && (
+                    <Search
+                      className="w-8 h-8 pointer-events-none"
+                      style={{
+                        color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                      }}
+                      strokeWidth={2}
+                    />
+                  )}
                   <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 z-10 cursor-pointer transition-colors"
+                    onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
+                    className="w-8 h-8 cursor-pointer transition-colors"
                     style={{
                       color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
                     }}
                   >
-                    <X className="w-8 h-8" strokeWidth={2} />
+                    {viewMode === "list" ? (
+                      <IconLayoutGrid className="w-8 h-8" strokeWidth={2} />
+                    ) : (
+                      <IconList className="w-8 h-8" strokeWidth={2} />
+                    )}
                   </button>
-                ) : (
-                  <Search
-                    className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 pointer-events-none z-10"
-                    style={{
-                      color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
-                    }}
-                    strokeWidth={2}
-                  />
-                )}
+                </div>
                 <input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search"
-                  className={`w-full bg-transparent text-[30px] leading-[36px] font-bold placeholder:text-muted-foreground focus:outline-none pr-16 cursor-text ${
+                  className={`w-full bg-transparent text-[30px] leading-[36px] font-bold placeholder:text-muted-foreground focus:outline-none pr-24 cursor-text ${
                     searchQuery ? "text-[#fafafa]" : "text-muted-foreground"
                   }`}
                 />
@@ -1237,15 +1256,19 @@ export default function Home() {
 
             {/* Tasks List */}
             <ScrollArea className="flex-1">
-              <div>
+              <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-7" : ""}>
                 {filteredTasks.map((task, index) => {
                   return (
                     <button
                       key={task.id}
-                      className={`relative w-full px-7 py-6 text-left ${
-                        index !== filteredTasks.length - 1
-                          ? "border-b border-border"
-                          : ""
+                      className={`relative text-left ${
+                        viewMode === "list" 
+                          ? `w-full px-7 py-6 ${
+                              index !== filteredTasks.length - 1
+                                ? "border-b border-border"
+                                : ""
+                            }`
+                          : "p-6 border border-border rounded-lg hover:border-muted-foreground transition-colors"
                       } ${
                         task.disabled 
                           ? "cursor-not-allowed opacity-50" 
@@ -1254,19 +1277,19 @@ export default function Home() {
                       onClick={() => !task.disabled && router.push(`/task/${task.id}`)}
                       disabled={task.disabled}
                     >
-                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
+                        <div className={`flex ${viewMode === "list" ? "flex-col lg:flex-row lg:items-start lg:justify-between" : "flex-col"} gap-3`}>
                         <div className="flex-1">
-                          <h3 className="text-[30px] leading-[36px] font-bold mb-2">
+                          <h3 className={`font-bold mb-2 ${viewMode === "list" ? "text-[30px] leading-[36px]" : "text-[20px] leading-[26px]"}`}>
                             {task.title}
                           </h3>
                           <p
-                            className="text-[14px] leading-[18px] font-normal text-muted-foreground lg:max-w-2xl"
+                            className={`text-[14px] leading-[18px] font-normal text-muted-foreground ${viewMode === "list" ? "lg:max-w-2xl" : ""}`}
                             style={{ letterSpacing: "0.01em" }}
                           >
                             {task.disabled ? task.disabledMessage : task.description}
                           </p>
                         </div>
-                        <div className="flex items-center gap-2 lg:gap-3 flex-wrap lg:flex-nowrap">
+                        <div className={`flex items-center gap-2 ${viewMode === "list" ? "lg:gap-3" : "gap-2 mt-4"} flex-wrap ${viewMode === "list" ? "lg:flex-nowrap" : ""}`}>
                           {/* Expiration date - hidden for now
                           <Tooltip>
                             <TooltipTrigger asChild>
