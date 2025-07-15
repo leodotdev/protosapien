@@ -1125,6 +1125,7 @@ export default function Home() {
                           </p>
                         </div>
                         <div className="flex items-center gap-2 lg:gap-3 flex-wrap lg:flex-nowrap">
+                          {/* Expiration date - hidden for now
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <CustomBadge variant="date">
@@ -1135,6 +1136,7 @@ export default function Home() {
                               <p>Expires</p>
                             </TooltipContent>
                           </Tooltip>
+                          */}
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <CustomBadge variant="difficulty">
