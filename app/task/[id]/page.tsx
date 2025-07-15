@@ -172,7 +172,7 @@ export default function TaskPage() {
                       : "border-border hover:border-muted-foreground"
                   }`}
                 >
-                  <span className="text-[14px] leading-[18px]" style={{ letterSpacing: "0.01em" }}>
+                  <span className="font-mono text-[14px] leading-[18px] uppercase" style={{ letterSpacing: "0.01em" }}>
                     {option}
                   </span>
                 </button>
