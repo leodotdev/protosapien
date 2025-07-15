@@ -151,8 +151,28 @@ export default function TaskPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           {/* Left: Image Placeholder */}
           <div className="flex items-center justify-center">
-            <div className="w-full max-w-md aspect-square bg-muted rounded-[2px] flex items-center justify-center">
-              <span className="text-muted-foreground">Image Placeholder</span>
+            <div className="relative w-full max-w-md aspect-square">
+              {/* Corner lines */}
+              <div className="absolute top-0 left-0 w-8 h-8">
+                <div className="absolute top-0 left-0 w-full h-[1px] bg-muted-foreground"></div>
+                <div className="absolute top-0 left-0 w-[1px] h-full bg-muted-foreground"></div>
+              </div>
+              <div className="absolute top-0 right-0 w-8 h-8">
+                <div className="absolute top-0 right-0 w-full h-[1px] bg-muted-foreground"></div>
+                <div className="absolute top-0 right-0 w-[1px] h-full bg-muted-foreground"></div>
+              </div>
+              <div className="absolute bottom-0 left-0 w-8 h-8">
+                <div className="absolute bottom-0 left-0 w-full h-[1px] bg-muted-foreground"></div>
+                <div className="absolute bottom-0 left-0 w-[1px] h-full bg-muted-foreground"></div>
+              </div>
+              <div className="absolute bottom-0 right-0 w-8 h-8">
+                <div className="absolute bottom-0 right-0 w-full h-[1px] bg-muted-foreground"></div>
+                <div className="absolute bottom-0 right-0 w-[1px] h-full bg-muted-foreground"></div>
+              </div>
+              {/* Image content */}
+              <div className="w-full h-full bg-muted rounded-[2px] flex items-center justify-center">
+                <span className="text-muted-foreground">Image Placeholder</span>
+              </div>
             </div>
           </div>
 
