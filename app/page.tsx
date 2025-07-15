@@ -19,7 +19,22 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTheme } from "@/components/theme-provider";
-import { Search, X, User, Moon, Sun, LogOut, Plus, Car, Tag, Type, Shirt, FileText, Edit3, Info } from "lucide-react";
+import {
+  Search,
+  X,
+  User,
+  Moon,
+  Sun,
+  LogOut,
+  Plus,
+  Car,
+  Tag,
+  Type,
+  Shirt,
+  FileText,
+  Edit3,
+  Info,
+} from "lucide-react";
 import {
   IconMessageDots,
   IconCommand,
@@ -294,7 +309,9 @@ export default function Home() {
 
   // Filter states - empty arrays mean "ALL" is selected
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>(
+    []
+  );
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
   useEffect(() => {
@@ -314,9 +331,9 @@ export default function Home() {
       if (value === "ALL TYPES") {
         setSelectedTypes([]);
       } else {
-        setSelectedTypes(prev => 
-          prev.includes(value) 
-            ? prev.filter(t => t !== value)
+        setSelectedTypes((prev) =>
+          prev.includes(value)
+            ? prev.filter((t) => t !== value)
             : [...prev, value]
         );
       }
@@ -324,9 +341,9 @@ export default function Home() {
       if (value === "ALL DIFFICULTIES") {
         setSelectedDifficulties([]);
       } else {
-        setSelectedDifficulties(prev => 
-          prev.includes(value) 
-            ? prev.filter(d => d !== value)
+        setSelectedDifficulties((prev) =>
+          prev.includes(value)
+            ? prev.filter((d) => d !== value)
             : [...prev, value]
         );
       }
@@ -334,9 +351,9 @@ export default function Home() {
       if (value === "ALL LANGUAGES") {
         setSelectedLanguages([]);
       } else {
-        setSelectedLanguages(prev => 
-          prev.includes(value) 
-            ? prev.filter(l => l !== value)
+        setSelectedLanguages((prev) =>
+          prev.includes(value)
+            ? prev.filter((l) => l !== value)
             : [...prev, value]
         );
       }
@@ -351,13 +368,18 @@ export default function Home() {
     }
 
     // Check difficulty filter (empty array means show all)
-    if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(task.difficulty)) {
+    if (
+      selectedDifficulties.length > 0 &&
+      !selectedDifficulties.includes(task.difficulty)
+    ) {
       return false;
     }
 
     // Check language filter (empty array means show all)
-    if (selectedLanguages.length > 0 && 
-        !task.languages.some(lang => selectedLanguages.includes(lang))) {
+    if (
+      selectedLanguages.length > 0 &&
+      !task.languages.some((lang) => selectedLanguages.includes(lang))
+    ) {
       return false;
     }
 
@@ -405,7 +427,9 @@ export default function Home() {
                     selectedLanguages.length > 0) && (
                     <span className="font-mono text-[14px] leading-[18px] font-normal text-primary ml-2">
                       (
-                      {selectedTypes.length + selectedDifficulties.length + selectedLanguages.length}
+                      {selectedTypes.length +
+                        selectedDifficulties.length +
+                        selectedLanguages.length}
                       )
                     </span>
                   )}
@@ -427,36 +451,36 @@ export default function Home() {
                   return (
                     <div key={idx} className="flex flex-col gap-2">
                       {/* Add the "ALL" option first */}
-                        <button
-                          className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                            selectedItems.length === 0
-                              ? "text-foreground"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                          onClick={() =>
-                            handleFilterClick(categoryType, category.title)
-                          }
-                        >
-                          {category.title}
-                        </button>
-                        {category.items.map((item) => {
-                          const isSelected = selectedItems.includes(item);
-                          return (
-                            <button
-                              key={item}
-                              className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                                isSelected
-                                  ? "text-foreground"
-                                  : "text-muted-foreground hover:text-foreground"
-                              }`}
-                              onClick={() =>
-                                handleFilterClick(categoryType, item)
-                              }
-                            >
-                              {item}
-                            </button>
-                          );
-                        })}
+                      <button
+                        className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                          selectedItems.length === 0
+                            ? "text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                        onClick={() =>
+                          handleFilterClick(categoryType, category.title)
+                        }
+                      >
+                        {category.title}
+                      </button>
+                      {category.items.map((item) => {
+                        const isSelected = selectedItems.includes(item);
+                        return (
+                          <button
+                            key={item}
+                            className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                              isSelected
+                                ? "text-foreground"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                            onClick={() =>
+                              handleFilterClick(categoryType, item)
+                            }
+                          >
+                            {item}
+                          </button>
+                        );
+                      })}
                     </div>
                   );
                 })}
@@ -727,9 +751,7 @@ export default function Home() {
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         {/* Wallet Section */}
-                        <DropdownMenuItem
-                          className="cursor-default rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between"
-                        >
+                        <DropdownMenuItem className="cursor-default rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <Image
                               src="/icon-metamask.svg"
@@ -1058,9 +1080,7 @@ export default function Home() {
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       {/* Wallet Section */}
-                      <DropdownMenuItem
-                        className="cursor-default rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between"
-                      >
+                      <DropdownMenuItem className="cursor-default rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Image
                             src="/icon-metamask.svg"
@@ -1156,7 +1176,7 @@ export default function Home() {
 
               {/* Search Bar */}
               <div className="flex-1 relative px-7 py-6">
-                <div className="flex items-center gap-2 absolute right-6 top-1/2 -translate-y-1/2 z-10">
+                <div className="flex items-center gap-6 absolute right-6 top-1/2 -translate-y-1/2 z-10">
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
@@ -1178,7 +1198,9 @@ export default function Home() {
                     />
                   )}
                   <button
-                    onClick={() => setViewMode(viewMode === "list" ? "grid" : "list")}
+                    onClick={() =>
+                      setViewMode(viewMode === "list" ? "grid" : "list")
+                    }
                     className="w-8 h-8 cursor-pointer transition-colors"
                     style={{
                       color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
@@ -1218,36 +1240,36 @@ export default function Home() {
                   return (
                     <div key={idx} className="flex flex-col gap-2">
                       {/* Add the "ALL" option first */}
-                        <button
-                          className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                            selectedItems.length === 0
-                              ? "text-foreground"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                          onClick={() =>
-                            handleFilterClick(categoryType, category.title)
-                          }
-                        >
-                          {category.title}
-                        </button>
-                        {category.items.map((item) => {
-                          const isSelected = selectedItems.includes(item);
-                          return (
-                            <button
-                              key={item}
-                              className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                                isSelected
-                                  ? "text-foreground"
-                                  : "text-muted-foreground hover:text-foreground"
-                              }`}
-                              onClick={() =>
-                                handleFilterClick(categoryType, item)
-                              }
-                            >
-                              {item}
-                            </button>
-                          );
-                        })}
+                      <button
+                        className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                          selectedItems.length === 0
+                            ? "text-foreground"
+                            : "text-muted-foreground hover:text-foreground"
+                        }`}
+                        onClick={() =>
+                          handleFilterClick(categoryType, category.title)
+                        }
+                      >
+                        {category.title}
+                      </button>
+                      {category.items.map((item) => {
+                        const isSelected = selectedItems.includes(item);
+                        return (
+                          <button
+                            key={item}
+                            className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
+                              isSelected
+                                ? "text-foreground"
+                                : "text-muted-foreground hover:text-foreground"
+                            }`}
+                            onClick={() =>
+                              handleFilterClick(categoryType, item)
+                            }
+                          >
+                            {item}
+                          </button>
+                        );
+                      })}
                     </div>
                   );
                 })}
@@ -1256,42 +1278,76 @@ export default function Home() {
 
             {/* Tasks List */}
             <ScrollArea className="flex-1">
-              <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : ""}>
+              <div
+                className={`${
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                    : ""
+                } [&:has(.task-enabled:hover)>.task-item:not(.task-disabled)]:opacity-[0.32] [&:has(.task-enabled:hover)>.task-item:has(.task-enabled:hover)]:!opacity-100`}
+              >
                 {filteredTasks.map((task, index) => {
-                  const isLastRow = viewMode === "grid" && index >= filteredTasks.length - 3;
-                  const isRightColumn = viewMode === "grid" && (index + 1) % 3 === 0;
+                  const isLastRow =
+                    viewMode === "grid" && index >= filteredTasks.length - 3;
+                  const isRightColumn =
+                    viewMode === "grid" && (index + 1) % 3 === 0;
                   return (
                     <button
                       key={task.id}
-                      className={`relative text-left ${
-                        viewMode === "list" 
+                      className={`task-item relative text-left transition-opacity duration-200 ${
+                        viewMode === "list"
                           ? `w-full px-7 py-6 ${
                               index !== filteredTasks.length - 1
                                 ? "border-b border-border"
                                 : ""
                             }`
-                          : `p-7 ${!isLastRow ? "border-b" : ""} ${!isRightColumn ? "lg:border-r" : ""} border-border`
+                          : `p-7 ${!isLastRow ? "border-b" : ""} ${
+                              !isRightColumn ? "lg:border-r" : ""
+                            } border-border`
                       } ${
-                        task.disabled 
-                          ? "cursor-not-allowed opacity-50" 
-                          : "cursor-pointer"
+                        task.disabled
+                          ? "task-disabled cursor-not-allowed opacity-50"
+                          : "task-enabled cursor-pointer"
                       }`}
-                      onClick={() => !task.disabled && router.push(`/task/${task.id}`)}
+                      onClick={() =>
+                        !task.disabled && router.push(`/task/${task.id}`)
+                      }
                       disabled={task.disabled}
                     >
-                        <div className={`flex ${viewMode === "list" ? "flex-col lg:flex-row lg:items-start lg:justify-between" : "flex-col"} gap-3`}>
+                      <div
+                        className={`flex ${
+                          viewMode === "list"
+                            ? "flex-col lg:flex-row lg:items-start lg:justify-between"
+                            : "flex-col"
+                        } gap-3`}
+                      >
                         <div className="flex-1">
-                          <h3 className={`font-bold mb-2 ${viewMode === "list" ? "text-[30px] leading-[36px]" : "text-[20px] leading-[26px]"}`}>
+                          <h3
+                            className={`font-bold mb-2 ${
+                              viewMode === "list"
+                                ? "text-[30px] leading-[36px]"
+                                : "text-[20px] leading-[26px]"
+                            }`}
+                          >
                             {task.title}
                           </h3>
                           <p
-                            className={`text-[14px] leading-[18px] font-normal text-muted-foreground ${viewMode === "list" ? "lg:max-w-2xl" : ""}`}
+                            className={`text-[14px] leading-[18px] font-normal text-muted-foreground ${
+                              viewMode === "list" ? "lg:max-w-2xl" : ""
+                            }`}
                             style={{ letterSpacing: "0.01em" }}
                           >
-                            {task.disabled ? task.disabledMessage : task.description}
+                            {task.disabled
+                              ? task.disabledMessage
+                              : task.description}
                           </p>
                         </div>
-                        <div className={`flex items-center gap-2 ${viewMode === "list" ? "lg:gap-3" : "gap-2 mt-4"} flex-wrap ${viewMode === "list" ? "lg:flex-nowrap" : ""}`}>
+                        <div
+                          className={`flex items-center gap-2 ${
+                            viewMode === "list" ? "lg:gap-3" : "gap-2 mt-4"
+                          } flex-wrap ${
+                            viewMode === "list" ? "lg:flex-nowrap" : ""
+                          }`}
+                        >
                           {/* Expiration date - hidden for now
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -1330,7 +1386,11 @@ export default function Home() {
                           {task.price ? (
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <CustomBadge variant={task.disabled ? "ghost" : "multiplier"}>
+                                <CustomBadge
+                                  variant={
+                                    task.disabled ? "ghost" : "multiplier"
+                                  }
+                                >
                                   {task.disabled ? (
                                     <Info className="w-4 h-4 mr-1" />
                                   ) : (
@@ -1340,7 +1400,11 @@ export default function Home() {
                                 </CustomBadge>
                               </TooltipTrigger>
                               <TooltipContent>
-                                <p>{task.disabled ? "Tasks available" : "Price per task"}</p>
+                                <p>
+                                  {task.disabled
+                                    ? "Tasks available"
+                                    : "Price per task"}
+                                </p>
                               </TooltipContent>
                             </Tooltip>
                           ) : task.multiplier ? (
@@ -1381,7 +1445,9 @@ export default function Home() {
       <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
         <DialogContent className="sm:max-w-[425px] rounded-[2px] bg-background border-border">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-normal">Link your wallet</DialogTitle>
+            <DialogTitle className="text-2xl font-normal">
+              Link your wallet
+            </DialogTitle>
             <DialogDescription className="text-muted-foreground">
               Link a wallet to your Sapien account
             </DialogDescription>
@@ -1428,7 +1494,9 @@ export default function Home() {
             </button>
           </div>
           <div className="mt-6 flex items-center justify-center">
-            <span className="text-xs text-muted-foreground">Powered by Privy</span>
+            <span className="text-xs text-muted-foreground">
+              Powered by Privy
+            </span>
           </div>
         </DialogContent>
       </Dialog>
