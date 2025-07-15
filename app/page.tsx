@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTheme } from "@/components/theme-provider";
-import { Search, X, User, Moon, Sun, LogOut, Plus } from "lucide-react";
+import { Search, X, User, Moon, Sun, LogOut, Plus, Car, Tag, Type, Shirt, FileText, Edit3, Info } from "lucide-react";
 import {
   IconMessageDots,
   IconCommand,
@@ -133,6 +133,74 @@ CustomBadge.displayName = "CustomBadge";
 const tasks = [
   {
     id: 1,
+    title: "Vehicle Positioning",
+    description:
+      "Analyze vehicle positions in images and provide accurate location data for autonomous driving systems.",
+    type: "DATA ANNOTATION",
+    difficulty: "INTERMEDIATE",
+    languages: ["ENGLISH"],
+    price: "0.50 USD",
+    icon: Car,
+  },
+  {
+    id: 2,
+    title: "Tag-a-Dog",
+    description:
+      "Identify and tag different dog breeds in images to train pet recognition models.",
+    type: "DATA COLLECTION",
+    difficulty: "EASY",
+    languages: ["ENGLISH"],
+    price: "0.50 USD",
+    icon: Tag,
+  },
+  {
+    id: 3,
+    title: "Textography",
+    description:
+      "Extract and transcribe text from images with various fonts and backgrounds.",
+    type: "DATA ANNOTATION",
+    difficulty: "INTERMEDIATE",
+    languages: ["ENGLISH"],
+    price: "0.50 USD",
+    icon: Type,
+  },
+  {
+    id: 4,
+    title: "Clothing Match",
+    description:
+      "Match and categorize clothing items by style, color, and type for fashion AI systems.",
+    type: "DATA ANNOTATION",
+    difficulty: "EASY",
+    languages: ["ENGLISH"],
+    price: "0.50 USD",
+    icon: Shirt,
+  },
+  {
+    id: 5,
+    title: "Image Text Extraction",
+    description:
+      "Extract text from complex images including handwritten notes and stylized fonts.",
+    type: "DATA ANNOTATION",
+    difficulty: "EXPERT",
+    languages: ["ENGLISH"],
+    price: "0.50 USD",
+    icon: FileText,
+  },
+  {
+    id: 6,
+    title: "English Copyediting",
+    description:
+      "Edit and improve English text for grammar, clarity, and style.",
+    type: "QUALITY ASSESSMENT",
+    difficulty: "INTERMEDIATE",
+    languages: ["ENGLISH"],
+    price: "10",
+    icon: Edit3,
+    disabled: true,
+    disabledMessage: "No more data for this task right now. Check back later.",
+  },
+  {
+    id: 7,
     title: "ChatCaps",
     description:
       "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
@@ -140,11 +208,10 @@ const tasks = [
     difficulty: "EASY",
     languages: ["ENGLISH"],
     multiplier: 25,
-    date: "DEC 15",
     icon: IconMessageDots,
   },
   {
-    id: 2,
+    id: 8,
     title: "Command Prompts",
     description:
       "Create and refine Spanish-language commands, improving their accuracy and clarity.",
@@ -152,56 +219,7 @@ const tasks = [
     difficulty: "EASY",
     languages: ["SPANISH"],
     multiplier: 50,
-    date: "DEC 14",
     icon: IconCommand,
-  },
-  {
-    id: 3,
-    title: "Plot Points",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "QUALITY ASSESSMENT",
-    difficulty: "INTERMEDIATE",
-    languages: ["ENGLISH"],
-    multiplier: 50,
-    date: "DEC 13",
-    icon: IconChartDots3,
-  },
-  {
-    id: 4,
-    title: "Quick Scripts",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "DATA COLLECTION",
-    difficulty: "EASY",
-    languages: ["普通话"],
-    multiplier: 50,
-    date: "DEC 12",
-    icon: IconScript,
-  },
-  {
-    id: 5,
-    title: "Gesture Set",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "DATA ANNOTATION",
-    difficulty: "EXPERT",
-    languages: ["ENGLISH"],
-    multiplier: 5,
-    date: "DEC 11",
-    icon: IconHandMove,
-  },
-  {
-    id: 6,
-    title: "ChatCaps",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "DATA ANNOTATION",
-    difficulty: "EASY",
-    languages: ["MANDARIN"],
-    multiplier: 50,
-    date: "DEC 10",
-    icon: IconMessageDots,
   },
 ];
 
@@ -1187,19 +1205,35 @@ export default function Home() {
                       }`}
                     >
                       <button
-                        className="relative w-full px-7 py-6 cursor-pointer text-left transition-opacity duration-200 hover:opacity-100 group-hover:opacity-[0.32] hover:!opacity-100"
-                        onClick={() => router.push(`/task/${task.id}`)}
+                        className={`relative w-full px-7 py-6 text-left transition-opacity duration-200 ${
+                          task.disabled 
+                            ? "cursor-not-allowed opacity-50" 
+                            : "cursor-pointer hover:opacity-100 group-hover:opacity-[0.32] hover:!opacity-100"
+                        }`}
+                        onClick={() => !task.disabled && router.push(`/task/${task.id}`)}
+                        disabled={task.disabled}
                       >
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
                         <div className="flex-1">
-                          <h3 className="text-[30px] leading-[36px] font-bold mb-2">
-                            {task.title}
-                          </h3>
+                          <div className="flex items-center gap-3 mb-2">
+                            <task.icon 
+                              className="w-8 h-8" 
+                              style={{
+                                color: task.disabled 
+                                  ? (theme === "dark" ? "#5c5c5c" : "#b2b2b2")
+                                  : (theme === "dark" ? "#fafafa" : "#111111")
+                              }}
+                              strokeWidth={1.5}
+                            />
+                            <h3 className="text-[30px] leading-[36px] font-bold">
+                              {task.title}
+                            </h3>
+                          </div>
                           <p
                             className="text-[14px] leading-[18px] font-normal text-muted-foreground lg:max-w-2xl"
                             style={{ letterSpacing: "0.01em" }}
                           >
-                            {task.description}
+                            {task.disabled ? task.disabledMessage : task.description}
                           </p>
                         </div>
                         <div className="flex items-center gap-2 lg:gap-3 flex-wrap lg:flex-nowrap">
@@ -1238,27 +1272,45 @@ export default function Home() {
                             </Tooltip>
                           ))}
 
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <CustomBadge variant="multiplier">
-                                <Image
-                                  src="/icon-spark-filled.svg"
-                                  alt="Spark"
-                                  width={16}
-                                  height={16}
-                                  className="mr-1"
-                                  style={{
-                                    filter:
-                                      "brightness(0) saturate(100%) invert(100%)",
-                                  }}
-                                />
-                                {task.multiplier}
-                              </CustomBadge>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Reward</p>
-                            </TooltipContent>
-                          </Tooltip>
+                          {task.price ? (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <CustomBadge variant={task.disabled ? "ghost" : "multiplier"}>
+                                  {task.disabled ? (
+                                    <Info className="w-4 h-4 mr-1" />
+                                  ) : (
+                                    <span className="mr-1">$</span>
+                                  )}
+                                  {task.price}
+                                </CustomBadge>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{task.disabled ? "Tasks available" : "Price per task"}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          ) : task.multiplier ? (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <CustomBadge variant="multiplier">
+                                  <Image
+                                    src="/icon-spark-filled.svg"
+                                    alt="Spark"
+                                    width={16}
+                                    height={16}
+                                    className="mr-1"
+                                    style={{
+                                      filter:
+                                        "brightness(0) saturate(100%) invert(100%)",
+                                    }}
+                                  />
+                                  {task.multiplier}
+                                </CustomBadge>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Reward</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          ) : null}
                         </div>
                       </div>
                       </button>
