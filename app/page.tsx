@@ -1270,7 +1270,7 @@ export default function Home() {
 
       {/* Wallet Dialog */}
       <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
-        <DialogContent className="sm:max-w-[425px] rounded-[2px] bg-[#1a1a1a] border-border">
+        <DialogContent className="sm:max-w-[425px] rounded-[2px] bg-background border-border">
           <DialogHeader>
             <DialogTitle className="text-2xl font-normal">Link your wallet</DialogTitle>
             <DialogDescription className="text-muted-foreground">
@@ -1279,7 +1279,7 @@ export default function Home() {
           </DialogHeader>
           <div className="mt-6 space-y-3">
             <button
-              className="w-full p-4 rounded-lg border border-border bg-[#242424] hover:bg-[#2a2a2a] transition-colors flex items-center gap-3"
+              className="w-full p-4 rounded-lg border border-border bg-muted/50 hover:bg-muted transition-colors flex items-center gap-3"
               onClick={() => {
                 console.log("Connect MetaMask");
                 setShowWalletDialog(false);
@@ -1294,7 +1294,7 @@ export default function Home() {
               <span className="text-base">MetaMask</span>
             </button>
             <button
-              className="w-full p-4 rounded-lg border border-border bg-[#242424] hover:bg-[#2a2a2a] transition-colors flex items-center gap-3"
+              className="w-full p-4 rounded-lg border border-border bg-muted/50 hover:bg-muted transition-colors flex items-center gap-3"
               onClick={() => {
                 console.log("Connect Coinbase");
                 setShowWalletDialog(false);
@@ -1306,7 +1306,7 @@ export default function Home() {
               <span className="text-base">Coinbase</span>
             </button>
             <button
-              className="w-full p-4 rounded-lg border border-border bg-[#242424] hover:bg-[#2a2a2a] transition-colors flex items-center gap-3"
+              className="w-full p-4 rounded-lg border border-border bg-muted/50 hover:bg-muted transition-colors flex items-center gap-3"
               onClick={() => {
                 console.log("Connect WalletConnect");
                 setShowWalletDialog(false);
