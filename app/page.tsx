@@ -1256,8 +1256,10 @@ export default function Home() {
 
             {/* Tasks List */}
             <ScrollArea className="flex-1">
-              <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-7" : ""}>
+              <div className={viewMode === "grid" ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : ""}>
                 {filteredTasks.map((task, index) => {
+                  const isLastRow = viewMode === "grid" && index >= filteredTasks.length - 3;
+                  const isRightColumn = viewMode === "grid" && (index + 1) % 3 === 0;
                   return (
                     <button
                       key={task.id}
@@ -1268,7 +1270,7 @@ export default function Home() {
                                 ? "border-b border-border"
                                 : ""
                             }`
-                          : "p-6 border border-border rounded-lg hover:border-muted-foreground transition-colors"
+                          : `p-7 ${!isLastRow ? "border-b" : ""} ${!isRightColumn ? "lg:border-r" : ""} border-border`
                       } ${
                         task.disabled 
                           ? "cursor-not-allowed opacity-50" 
