@@ -5,21 +5,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Copy, Wallet, Check } from "lucide-react";
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from "recharts";
-import {
-  ChartConfig,
-  ChartContainer,
-} from "@/components/ui/chart";
 
 export default function DashboardPage() {
-  const chartData = [{ trust: 78 }];
-  
-  const chartConfig = {
-    trust: {
-      label: "Trust",
-      color: "#A3E635",
-    },
-  } satisfies ChartConfig;
   return (
     <div className="flex-1">
       {/* Main 2-column grid layout */}
@@ -359,48 +346,12 @@ export default function DashboardPage() {
               </div>
 
               <div className="w-[250px] hidden lg:block">
-                <ChartContainer config={chartConfig} className="w-full h-[250px]">
-                  <RadialBarChart
-                    data={chartData}
-                    startAngle={180}
-                    endAngle={0}
-                    innerRadius={80}
-                    outerRadius={110}
-                  >
-                    <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-                      <Label
-                        content={({ viewBox }) => {
-                          if (viewBox && "cx" in viewBox && "cy" in viewBox) {
-                            return (
-                              <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
-                                <tspan
-                                  x={viewBox.cx}
-                                  y={(viewBox.cy || 0) - 16}
-                                  className="fill-foreground text-[30px] leading-[36px] font-bold"
-                                >
-                                  78%
-                                </tspan>
-                                <tspan
-                                  x={viewBox.cx}
-                                  y={(viewBox.cy || 0) + 8}
-                                  className="fill-muted-foreground text-[14px] leading-[18px]"
-                                >
-                                  Avg score
-                                </tspan>
-                              </text>
-                            )
-                          }
-                        }}
-                      />
-                    </PolarRadiusAxis>
-                    <RadialBar
-                      dataKey="trust"
-                      cornerRadius={10}
-                      fill="#A3E635"
-                      className="stroke-transparent stroke-2"
-                    />
-                  </RadialBarChart>
-                </ChartContainer>
+                <div className="w-full h-[250px] flex items-center justify-center">
+                  <div className="text-center">
+                    <p className="text-[30px] leading-[36px] font-bold">78%</p>
+                    <p className="text-[14px] leading-[18px] text-muted-foreground">Avg score</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
