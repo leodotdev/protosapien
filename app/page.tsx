@@ -613,7 +613,7 @@ export default function Home() {
                               Profile
                             </span>
                             <span className="font-mono text-[14px] leading-[18px] text-muted-foreground">
-                              70% TRUST SCORE
+                              LVL 01, 70% TS
                             </span>
                           </div>
                           <User
@@ -944,7 +944,7 @@ export default function Home() {
                             Profile
                           </span>
                           <span className="font-mono text-[14px] leading-[18px] text-muted-foreground">
-                            70% TRUST SCORE
+                            LVL 01, 70% TS
                           </span>
                         </div>
                         <User
@@ -1175,16 +1175,19 @@ export default function Home() {
               <div className="group">
                 {filteredTasks.map((task, index) => {
                   return (
-                    <button
+                    <div
                       key={task.id}
-                      className={`relative w-full px-7 py-6 cursor-pointer text-left transition-opacity duration-200 hover:opacity-100 group-hover:opacity-[0.32] hover:!opacity-100 ${
+                      className={`relative w-full ${
                         index !== filteredTasks.length - 1
                           ? "border-b border-border"
                           : ""
                       }`}
-                      onClick={() => router.push(`/task/${task.id}`)}
                     >
-                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
+                      <button
+                        className="relative w-full px-7 py-6 cursor-pointer text-left transition-opacity duration-200 hover:opacity-100 group-hover:opacity-[0.32] hover:!opacity-100"
+                        onClick={() => router.push(`/task/${task.id}`)}
+                      >
+                        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
                         <div className="flex-1">
                           <h3 className="text-[30px] leading-[36px] font-bold mb-2">
                             {task.title}
@@ -1255,7 +1258,8 @@ export default function Home() {
                           </Tooltip>
                         </div>
                       </div>
-                    </button>
+                      </button>
+                    </div>
                   );
                 })}
               </div>
