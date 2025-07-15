@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,20 +18,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTheme } from "@/components/theme-provider";
-import { Search, X, User, Moon, Sun, LogOut } from "lucide-react";
+import { User, Moon, Sun, LogOut } from "lucide-react";
 import {
-  IconMessageDots,
-  IconCommand,
-  IconChartDots3,
-  IconScript,
-  IconHandMove,
+  IconCashBanknote,
   IconCoin,
   IconCoins,
-  IconCashBanknote,
   IconMenu2,
 } from "@tabler/icons-react";
 import FlameGradientCSS from "@/components/flame-gradient-css";
-import LoadingSkeleton from "@/components/loading-skeleton";
 
 // Custom Badge Component
 const CustomBadge = React.forwardRef<
@@ -123,186 +116,15 @@ const CustomBadge = React.forwardRef<
 });
 CustomBadge.displayName = "CustomBadge";
 
-const tasks = [
-  {
-    id: 1,
-    title: "ChatCaps",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "DATA ANNOTATION",
-    difficulty: "EASY",
-    languages: ["ENGLISH"],
-    multiplier: 25,
-    date: "DEC 15",
-    icon: IconMessageDots,
-  },
-  {
-    id: 2,
-    title: "Command Prompts",
-    description:
-      "Create and refine Spanish-language commands, improving their accuracy and clarity.",
-    type: "DATA COLLECTION",
-    difficulty: "EASY",
-    languages: ["SPANISH"],
-    multiplier: 50,
-    date: "DEC 14",
-    icon: IconCommand,
-  },
-  {
-    id: 3,
-    title: "Plot Points",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "QUALITY ASSESSMENT",
-    difficulty: "INTERMEDIATE",
-    languages: ["ENGLISH"],
-    multiplier: 50,
-    date: "DEC 13",
-    icon: IconChartDots3,
-  },
-  {
-    id: 4,
-    title: "Quick Scripts",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "DATA COLLECTION",
-    difficulty: "EASY",
-    languages: ["普通话"],
-    multiplier: 50,
-    date: "DEC 12",
-    icon: IconScript,
-  },
-  {
-    id: 5,
-    title: "Gesture Set",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "DATA ANNOTATION",
-    difficulty: "EXPERT",
-    languages: ["ENGLISH"],
-    multiplier: 5,
-    date: "DEC 11",
-    icon: IconHandMove,
-  },
-  {
-    id: 6,
-    title: "ChatCaps",
-    description:
-      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
-    type: "DATA ANNOTATION",
-    difficulty: "EASY",
-    languages: ["MANDARIN"],
-    multiplier: 50,
-    date: "DEC 10",
-    icon: IconMessageDots,
-  },
-];
 
-const filterCategories = [
-  {
-    title: "ALL TYPES",
-    items: ["DATA COLLECTION", "DATA ANNOTATION", "QUALITY ASSESSMENT"],
-  },
-  {
-    title: "ALL DIFFICULTIES",
-    items: ["EASY", "INTERMEDIATE", "EXPERT"],
-  },
-  {
-    title: "ALL LANGUAGES",
-    items: ["ENGLISH", "SPANISH", "MANDARIN", "普通话"],
-  },
-];
-
-export default function Home() {
+function MainLayoutContent({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
   const { theme, setTheme } = useTheme();
-
-  // Filter states - empty arrays mean "ALL" is selected
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setMounted(true);
-    }, 2000); // Force 2 seconds loading state
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Filter logic - clicking "ALL" clears selections, otherwise toggle multi-selection
-  const handleFilterClick = (
-    category: "type" | "difficulty" | "language",
-    value: string
-  ) => {
-    if (category === "type") {
-      if (value === "ALL TYPES") {
-        setSelectedTypes([]);
-      } else {
-        setSelectedTypes(prev => 
-          prev.includes(value) 
-            ? prev.filter(t => t !== value)
-            : [...prev, value]
-        );
-      }
-    } else if (category === "difficulty") {
-      if (value === "ALL DIFFICULTIES") {
-        setSelectedDifficulties([]);
-      } else {
-        setSelectedDifficulties(prev => 
-          prev.includes(value) 
-            ? prev.filter(d => d !== value)
-            : [...prev, value]
-        );
-      }
-    } else if (category === "language") {
-      if (value === "ALL LANGUAGES") {
-        setSelectedLanguages([]);
-      } else {
-        setSelectedLanguages(prev => 
-          prev.includes(value) 
-            ? prev.filter(l => l !== value)
-            : [...prev, value]
-        );
-      }
-    }
-  };
-
-  // Filter tasks based on selected filters
-  const filteredTasks = tasks.filter((task) => {
-    // Check type filter (empty array means show all)
-    if (selectedTypes.length > 0 && !selectedTypes.includes(task.type)) {
-      return false;
-    }
-
-    // Check difficulty filter (empty array means show all)
-    if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(task.difficulty)) {
-      return false;
-    }
-
-    // Check language filter (empty array means show all)
-    if (selectedLanguages.length > 0 && 
-        !task.languages.some(lang => selectedLanguages.includes(lang))) {
-      return false;
-    }
-
-    // Check search query
-    if (
-      searchQuery &&
-      !task.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      !task.description.toLowerCase().includes(searchQuery.toLowerCase())
-    ) {
-      return false;
-    }
-
-    return true;
-  });
-
-  if (!mounted) {
-    return <LoadingSkeleton />;
-  }
 
   return (
     <TooltipProvider delayDuration={200}>
@@ -310,85 +132,103 @@ export default function Home() {
         <div className="flex w-full max-w-[1280px] min-h-screen lg:border-x border-border">
           {/* Sidebar - Hidden on mobile */}
           <div className="hidden lg:flex w-64 border-r border-border flex-col">
-            <div className="flex flex-col gap-24">
-              <div className="px-7 py-6">
-                <div className="p-1">
-                  <Image
-                    src={
-                      theme === "dark" ? "/logo-light.svg" : "/logo-dark.svg"
-                    }
-                    alt="Logo"
-                    width={32}
-                    height={32}
-                    className="h-6 w-6"
-                  />
+            <div className="px-7 py-6">
+              <div className="p-1">
+                <Image
+                  src={
+                    theme === "dark" ? "/logo-light.svg" : "/logo-dark.svg"
+                  }
+                  alt="Logo"
+                  width={32}
+                  height={32}
+                  className="h-6 w-6"
+                />
+              </div>
+            </div>
+            {/* Route-specific sidebar content */}
+            {pathname === "/dashboard" && (
+              <>
+                <div className="border-t border-border">
+                  {/* Your tokens */}
+                  <div className="px-7 py-6">
+                    <h4 className="text-[14px] leading-[18px] text-muted-foreground mb-2">Your tokens</h4>
+                    <p className="text-[30px] leading-[36px]">
+                      <span className="font-bold">10,000</span> <span className="text-[14px] leading-[18px] text-muted-foreground font-mono font-normal">$SAPIEN</span>
+                    </p>
+                    <p className="text-[14px] leading-[18px] text-muted-foreground">
+                      Use during airdrop—will expire after.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-t border-border">
+                  {/* Tokens claimed */}
+                  <div className="px-7 py-6">
+                    <h4 className="text-[14px] leading-[18px] text-muted-foreground mb-2">Tokens claimed</h4>
+                    <p className="text-[30px] leading-[36px]">
+                      <span className="font-bold">210</span> <span className="text-[14px] leading-[18px] text-muted-foreground font-mono font-normal">$SAPIEN</span>
+                    </p>
+                    <p className="text-[14px] leading-[18px] text-muted-foreground">25% claimed</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-border">
+                  {/* Streak */}
+                  <div className="px-7 py-6">
+                    <h4 className="text-[14px] leading-[18px] text-muted-foreground mb-2">Streak</h4>
+                    <p className="text-[30px] leading-[36px] font-bold">10 days</p>
+                    <p className="text-[14px] leading-[18px] text-muted-foreground">
+                      Earn extra 0.5x multiplier for every 10d streak.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-t border-border">
+                  {/* Active multiplier */}
+                  <div className="px-7 py-6">
+                    <h4 className="text-[14px] leading-[18px] text-muted-foreground mb-2">Active multiplier</h4>
+                    <p className="text-[30px] leading-[36px] font-bold">1.5x</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-border">
+                  {/* Global ranking */}
+                  <div className="px-7 py-6">
+                    <h4 className="text-[14px] leading-[18px] text-muted-foreground mb-2">Global ranking</h4>
+                    <p className="text-[30px] leading-[36px] font-bold mb-2">24,681</p>
+                    <button className="text-[14px] leading-[18px] text-foreground hover:text-primary transition-colors cursor-pointer">
+                      Leaderboard →
+                    </button>
+                  </div>
+                </div>
+
+                <div className="border-t border-border">
+                  {/* Stats */}
+                  <div className="px-7 py-6 space-y-3">
+                    <div>
+                      <p className="text-[14px] leading-[18px] text-muted-foreground">Tier</p>
+                      <p className="text-[14px] leading-[18px] font-bold">1</p>
+                    </div>
+                    <div>
+                      <p className="text-[14px] leading-[18px] text-muted-foreground">Tasks completed</p>
+                      <p className="text-[14px] leading-[18px] font-bold">123</p>
+                    </div>
+                    <div>
+                      <p className="text-[14px] leading-[18px] text-muted-foreground">Battle win rate</p>
+                      <p className="text-[14px] leading-[18px] font-bold">3.45%</p>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
+            {pathname === "/profile" && (
+              <div className="border-t border-border flex-1 overflow-y-auto">
+                {/* Profile sidebar content - placeholder for now */}
+                <div className="px-7 py-6">
+                  <p className="text-[14px] leading-[18px] text-muted-foreground">Profile sidebar content</p>
                 </div>
               </div>
-              <div className="px-7 py-6 border-b border-border">
-                <h2 className="text-[30px] leading-[36px] font-bold text-muted-foreground">
-                  Filter{" "}
-                  {(selectedTypes.length > 0 ||
-                    selectedDifficulties.length > 0 ||
-                    selectedLanguages.length > 0) && (
-                    <span className="font-mono text-[14px] leading-[18px] font-normal text-primary ml-2">
-                      (
-                      {selectedTypes.length + selectedDifficulties.length + selectedLanguages.length}
-                      )
-                    </span>
-                  )}
-                </h2>
-              </div>
-            </div>
-            <div className="px-7 py-6">
-              <div className="flex flex-col gap-8">
-                {filterCategories.map((category, idx) => {
-                  const categoryType =
-                    idx === 0 ? "type" : idx === 1 ? "difficulty" : "language";
-                  const selectedItems =
-                    categoryType === "type"
-                      ? selectedTypes
-                      : categoryType === "difficulty"
-                      ? selectedDifficulties
-                      : selectedLanguages;
-
-                  return (
-                    <div key={idx} className="flex flex-col gap-2">
-                      {/* Add the "ALL" option first */}
-                        <button
-                          className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                            selectedItems.length === 0
-                              ? "text-foreground"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                          onClick={() =>
-                            handleFilterClick(categoryType, category.title)
-                          }
-                        >
-                          {category.title}
-                        </button>
-                        {category.items.map((item) => {
-                          const isSelected = selectedItems.includes(item);
-                          return (
-                            <button
-                              key={item}
-                              className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                                isSelected
-                                  ? "text-foreground"
-                                  : "text-muted-foreground hover:text-foreground"
-                              }`}
-                              onClick={() =>
-                                handleFilterClick(categoryType, item)
-                              }
-                            >
-                              {item}
-                            </button>
-                          );
-                        })}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Main Content */}
@@ -416,21 +256,33 @@ export default function Home() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="font-mono text-[14px] leading-[18px] font-normal h-auto text-foreground hover:bg-transparent rounded-[2px] cursor-pointer"
-                        style={{
+                        className={`font-mono text-[14px] leading-[18px] font-normal h-auto hover:bg-transparent rounded-[2px] cursor-pointer ${
+                          pathname === "/" ? "text-foreground" : "text-muted-foreground"
+                        }`}
+                        style={pathname === "/" ? {
                           paddingLeft: "6px",
                           paddingRight: "6px",
                           paddingTop: "2px",
                           paddingBottom: "3px",
                           backgroundColor: "rgb(250 250 250 / 10%)",
-                        }}
+                        } : undefined}
+                        onClick={() => router.push("/")}
                       >
                         TASKS
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="font-mono text-[14px] leading-[18px] font-normal text-muted-foreground px-3 h-8 rounded-[2px] cursor-pointer"
+                        className={`font-mono text-[14px] leading-[18px] font-normal h-auto hover:bg-transparent rounded-[2px] cursor-pointer ${
+                          pathname === "/dashboard" ? "text-foreground" : "text-muted-foreground"
+                        }`}
+                        style={pathname === "/dashboard" ? {
+                          paddingLeft: "6px",
+                          paddingRight: "6px",
+                          paddingTop: "2px",
+                          paddingBottom: "3px",
+                          backgroundColor: "rgb(250 250 250 / 10%)",
+                        } : undefined}
                         onClick={() => router.push("/dashboard")}
                       >
                         TOKENS
@@ -438,7 +290,16 @@ export default function Home() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="font-mono text-[14px] leading-[18px] font-normal text-muted-foreground px-3 h-8 rounded-[2px] cursor-pointer"
+                        className={`font-mono text-[14px] leading-[18px] font-normal h-auto hover:bg-transparent rounded-[2px] cursor-pointer ${
+                          pathname === "/profile" ? "text-foreground" : "text-muted-foreground"
+                        }`}
+                        style={pathname === "/profile" ? {
+                          paddingLeft: "6px",
+                          paddingRight: "6px",
+                          paddingTop: "2px",
+                          paddingBottom: "3px",
+                          backgroundColor: "rgb(250 250 250 / 10%)",
+                        } : undefined}
                         onClick={() => router.push("/profile")}
                       >
                         LVL{" "}
@@ -596,8 +457,7 @@ export default function Home() {
                         <DropdownMenuItem
                           className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal flex justify-between"
                           onClick={() => {
-                            // Placeholder for profile navigation
-                            console.log("Navigate to profile");
+                            router.push("/profile");
                           }}
                         >
                           <div className="flex flex-col">
@@ -653,7 +513,6 @@ export default function Home() {
                         <DropdownMenuItem
                           className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                           onClick={() => {
-                            // Placeholder for instructions
                             console.log("Navigate to instructions");
                           }}
                         >
@@ -664,7 +523,6 @@ export default function Home() {
                         <DropdownMenuItem
                           className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                           onClick={() => {
-                            // Placeholder for FAQ
                             console.log("Navigate to FAQ");
                           }}
                         >
@@ -673,7 +531,6 @@ export default function Home() {
                         <DropdownMenuItem
                           className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                           onClick={() => {
-                            // Placeholder for Litepaper
                             console.log("Navigate to Litepaper");
                           }}
                         >
@@ -684,7 +541,6 @@ export default function Home() {
                         <DropdownMenuItem
                           className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                           onClick={() => {
-                            // Placeholder for Terms and Conditions
                             console.log("Navigate to Terms and Conditions");
                           }}
                         >
@@ -696,7 +552,6 @@ export default function Home() {
                         <DropdownMenuItem
                           className="cursor-pointer rounded-none text-red-500 focus:text-red-500 text-[14px] leading-[18px] font-normal flex justify-between"
                           onClick={() => {
-                            // Placeholder for logout
                             console.log("Logout");
                           }}
                         >
@@ -725,21 +580,33 @@ export default function Home() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="font-mono text-[14px] leading-[18px] font-normal h-auto text-foreground hover:bg-transparent rounded-[2px] cursor-pointer"
-                      style={{
+                      className={`font-mono text-[14px] leading-[18px] font-normal h-auto hover:bg-transparent rounded-[2px] cursor-pointer ${
+                        pathname === "/" ? "text-foreground" : "text-muted-foreground"
+                      }`}
+                      style={pathname === "/" ? {
                         paddingLeft: "6px",
                         paddingRight: "6px",
                         paddingTop: "2px",
                         paddingBottom: "3px",
                         backgroundColor: "rgb(250 250 250 / 10%)",
-                      }}
+                      } : undefined}
+                      onClick={() => router.push("/")}
                     >
                       TASKS
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="font-mono text-[14px] leading-[18px] font-normal text-muted-foreground px-3 h-8 rounded-[2px] cursor-pointer"
+                      className={`font-mono text-[14px] leading-[18px] font-normal h-auto hover:bg-transparent rounded-[2px] cursor-pointer ${
+                        pathname === "/dashboard" ? "text-foreground" : "text-muted-foreground"
+                      }`}
+                      style={pathname === "/dashboard" ? {
+                        paddingLeft: "6px",
+                        paddingRight: "6px",
+                        paddingTop: "2px",
+                        paddingBottom: "3px",
+                        backgroundColor: "rgb(250 250 250 / 10%)",
+                      } : undefined}
                       onClick={() => router.push("/dashboard")}
                     >
                       TOKENS
@@ -747,7 +614,16 @@ export default function Home() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="font-mono text-[14px] leading-[18px] font-normal text-muted-foreground px-3 h-8 rounded-[2px] cursor-pointer"
+                      className={`font-mono text-[14px] leading-[18px] font-normal h-auto hover:bg-transparent rounded-[2px] cursor-pointer ${
+                        pathname === "/profile" ? "text-foreground" : "text-muted-foreground"
+                      }`}
+                      style={pathname === "/profile" ? {
+                        paddingLeft: "6px",
+                        paddingRight: "6px",
+                        paddingTop: "2px",
+                        paddingBottom: "3px",
+                        backgroundColor: "rgb(250 250 250 / 10%)",
+                      } : undefined}
                       onClick={() => router.push("/profile")}
                     >
                       LVL{" "}
@@ -952,7 +828,6 @@ export default function Home() {
                       <DropdownMenuItem
                         className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                         onClick={() => {
-                          // Placeholder for instructions
                           console.log("Navigate to instructions");
                         }}
                       >
@@ -963,7 +838,6 @@ export default function Home() {
                       <DropdownMenuItem
                         className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                         onClick={() => {
-                          // Placeholder for FAQ
                           console.log("Navigate to FAQ");
                         }}
                       >
@@ -972,7 +846,6 @@ export default function Home() {
                       <DropdownMenuItem
                         className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                         onClick={() => {
-                          // Placeholder for Litepaper
                           console.log("Navigate to Litepaper");
                         }}
                       >
@@ -983,7 +856,6 @@ export default function Home() {
                       <DropdownMenuItem
                         className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                         onClick={() => {
-                          // Placeholder for Terms and Conditions
                           console.log("Navigate to Terms and Conditions");
                         }}
                       >
@@ -995,7 +867,6 @@ export default function Home() {
                       <DropdownMenuItem
                         className="cursor-pointer rounded-none text-red-500 focus:text-red-500 text-[14px] leading-[18px] font-normal flex justify-between"
                         onClick={() => {
-                          // Placeholder for logout
                           console.log("Logout");
                         }}
                       >
@@ -1013,182 +884,21 @@ export default function Home() {
                   </DropdownMenu>
                 </div>
               </div>
-
-              {/* Search Bar */}
-              <div className="flex-1 relative px-7 py-6">
-                {searchQuery ? (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 z-10 cursor-pointer transition-colors"
-                    style={{
-                      color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
-                    }}
-                  >
-                    <X className="w-8 h-8" strokeWidth={2} />
-                  </button>
-                ) : (
-                  <Search
-                    className="absolute right-6 top-1/2 -translate-y-1/2 w-8 h-8 pointer-events-none z-10"
-                    style={{
-                      color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
-                    }}
-                    strokeWidth={2}
-                  />
-                )}
-                <input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search"
-                  className={`w-full bg-transparent text-[30px] leading-[36px] font-bold placeholder:text-muted-foreground focus:outline-none pr-16 cursor-text ${
-                    searchQuery ? "text-[#fafafa]" : "text-muted-foreground"
-                  }`}
-                />
-              </div>
             </div>
 
-            {/* Mobile Filters */}
-            <div className="lg:hidden border-b border-border px-7 py-6">
-              <div className="flex flex-col gap-8">
-                {filterCategories.map((category, idx) => {
-                  const categoryType =
-                    idx === 0 ? "type" : idx === 1 ? "difficulty" : "language";
-                  const selectedItems =
-                    categoryType === "type"
-                      ? selectedTypes
-                      : categoryType === "difficulty"
-                      ? selectedDifficulties
-                      : selectedLanguages;
-
-                  return (
-                    <div key={idx} className="flex flex-col gap-2">
-                      {/* Add the "ALL" option first */}
-                        <button
-                          className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                            selectedItems.length === 0
-                              ? "text-foreground"
-                              : "text-muted-foreground hover:text-foreground"
-                          }`}
-                          onClick={() =>
-                            handleFilterClick(categoryType, category.title)
-                          }
-                        >
-                          {category.title}
-                        </button>
-                        {category.items.map((item) => {
-                          const isSelected = selectedItems.includes(item);
-                          return (
-                            <button
-                              key={item}
-                              className={`flex items-center font-mono text-[14px] leading-[18px] font-normal transition-colors tracking-wide cursor-pointer ${
-                                isSelected
-                                  ? "text-foreground"
-                                  : "text-muted-foreground hover:text-foreground"
-                              }`}
-                              onClick={() =>
-                                handleFilterClick(categoryType, item)
-                              }
-                            >
-                              {item}
-                            </button>
-                          );
-                        })}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Tasks List */}
-            <ScrollArea className="flex-1">
-              <div>
-                {filteredTasks.map((task, index) => {
-                  return (
-                    <button
-                      key={task.id}
-                      className={`relative w-full px-7 py-6 hover:bg-[rgb(17_17_17_/_8%)] dark:hover:bg-[#242424] transition-all duration-200 cursor-pointer text-left ${
-                        index !== filteredTasks.length - 1
-                          ? "border-b border-border hover:border-transparent"
-                          : ""
-                      }`}
-                      onClick={() => router.push(`/task/${task.id}`)}
-                    >
-                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
-                        <div className="flex-1">
-                          <h3 className="text-[30px] leading-[36px] font-bold mb-2">
-                            {task.title}
-                          </h3>
-                          <p
-                            className="text-[14px] leading-[18px] font-normal text-muted-foreground lg:max-w-2xl"
-                            style={{ letterSpacing: "0.01em" }}
-                          >
-                            {task.description}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2 lg:gap-3 flex-wrap lg:flex-nowrap">
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <CustomBadge variant="date">
-                                {task.date}
-                              </CustomBadge>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Expires</p>
-                            </TooltipContent>
-                          </Tooltip>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <CustomBadge variant="difficulty">
-                                {task.difficulty}
-                              </CustomBadge>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Difficulty</p>
-                            </TooltipContent>
-                          </Tooltip>
-                          {task.languages.map((lang) => (
-                            <Tooltip key={lang}>
-                              <TooltipTrigger asChild>
-                                <CustomBadge variant="language">
-                                  {lang}
-                                </CustomBadge>
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Language</p>
-                              </TooltipContent>
-                            </Tooltip>
-                          ))}
-
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <CustomBadge variant="multiplier">
-                                <Image
-                                  src="/icon-spark-filled.svg"
-                                  alt="Spark"
-                                  width={16}
-                                  height={16}
-                                  className="mr-1"
-                                  style={{
-                                    filter:
-                                      "brightness(0) saturate(100%) invert(100%)",
-                                  }}
-                                />
-                                {task.multiplier}
-                              </CustomBadge>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Reward</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </ScrollArea>
+            {/* Page Content */}
+            <div className="flex-1">{children}</div>
           </div>
         </div>
       </div>
     </TooltipProvider>
   );
+}
+
+export default function MainLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <MainLayoutContent>{children}</MainLayoutContent>;
 }

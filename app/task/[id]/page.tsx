@@ -129,14 +129,14 @@ export default function TaskPage() {
           <div className="flex items-center justify-between">
             <button
               onClick={handleBack}
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-5 h-5" />
-              <span className="font-mono text-[14px] leading-[18px]">Back to tasks</span>
+              <span className="font-mono text-[14px] leading-[18px]">BACK TO TASKS</span>
             </button>
             <div className="flex items-center gap-4">
               <span className="font-mono text-[14px] leading-[18px] text-muted-foreground">
-                Question {currentQuestion + 1} of {questions.length}
+                QUESTION {currentQuestion + 1} OF {questions.length}
               </span>
               <div className="w-32">
                 <Meter value={progress} />
