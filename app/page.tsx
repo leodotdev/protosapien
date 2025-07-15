@@ -1215,20 +1215,9 @@ export default function Home() {
                       >
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
                         <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-2">
-                            <task.icon 
-                              className="w-8 h-8" 
-                              style={{
-                                color: task.disabled 
-                                  ? (theme === "dark" ? "#5c5c5c" : "#b2b2b2")
-                                  : (theme === "dark" ? "#fafafa" : "#111111")
-                              }}
-                              strokeWidth={1.5}
-                            />
-                            <h3 className="text-[30px] leading-[36px] font-bold">
-                              {task.title}
-                            </h3>
-                          </div>
+                          <h3 className="text-[30px] leading-[36px] font-bold mb-2">
+                            {task.title}
+                          </h3>
                           <p
                             className="text-[14px] leading-[18px] font-normal text-muted-foreground lg:max-w-2xl"
                             style={{ letterSpacing: "0.01em" }}
