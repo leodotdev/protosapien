@@ -1198,21 +1198,22 @@ export default function Home() {
                   return (
                     <div
                       key={task.id}
-                      className={`task-wrapper relative w-full transition-opacity duration-200 ${
+                      className={`relative w-full ${
                         index !== filteredTasks.length - 1
                           ? "border-b border-border"
                           : ""
                       }`}
                     >
-                      <button
-                        className={`relative w-full px-7 py-6 text-left ${
-                          task.disabled 
-                            ? "cursor-not-allowed opacity-50" 
-                            : "task-enabled cursor-pointer"
-                        }`}
-                        onClick={() => !task.disabled && router.push(`/task/${task.id}`)}
-                        disabled={task.disabled}
-                      >
+                      <div className="task-wrapper transition-opacity duration-200">
+                        <button
+                          className={`relative w-full px-7 py-6 text-left ${
+                            task.disabled 
+                              ? "cursor-not-allowed opacity-50" 
+                              : "task-enabled cursor-pointer"
+                          }`}
+                          onClick={() => !task.disabled && router.push(`/task/${task.id}`)}
+                          disabled={task.disabled}
+                        >
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
                         <div className="flex-1">
                           <h3 className="text-[30px] leading-[36px] font-bold mb-2">
@@ -1302,7 +1303,8 @@ export default function Home() {
                           ) : null}
                         </div>
                       </div>
-                      </button>
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
