@@ -1193,27 +1193,23 @@ export default function Home() {
 
             {/* Tasks List */}
             <ScrollArea className="flex-1">
-              <div className="[&:has(.task-enabled:hover)>.task-wrapper]:opacity-[0.32] [&:has(.task-enabled:hover)>.task-wrapper:has(.task-enabled:hover)]:!opacity-100">
+              <div>
                 {filteredTasks.map((task, index) => {
                   return (
-                    <div
+                    <button
                       key={task.id}
-                      className={`relative w-full ${
+                      className={`relative w-full px-7 py-6 text-left ${
                         index !== filteredTasks.length - 1
                           ? "border-b border-border"
                           : ""
+                      } ${
+                        task.disabled 
+                          ? "cursor-not-allowed opacity-50" 
+                          : "cursor-pointer"
                       }`}
+                      onClick={() => !task.disabled && router.push(`/task/${task.id}`)}
+                      disabled={task.disabled}
                     >
-                      <div className="task-wrapper transition-opacity duration-200">
-                        <button
-                          className={`relative w-full px-7 py-6 text-left ${
-                            task.disabled 
-                              ? "cursor-not-allowed opacity-50" 
-                              : "task-enabled cursor-pointer"
-                          }`}
-                          onClick={() => !task.disabled && router.push(`/task/${task.id}`)}
-                          disabled={task.disabled}
-                        >
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3">
                         <div className="flex-1">
                           <h3 className="text-[30px] leading-[36px] font-bold mb-2">
@@ -1303,9 +1299,7 @@ export default function Home() {
                           ) : null}
                         </div>
                       </div>
-                        </button>
-                      </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
