@@ -1100,12 +1100,12 @@ export default function Home() {
 
             {/* Tasks List */}
             <ScrollArea className="flex-1">
-              <div>
+              <div className="group">
                 {filteredTasks.map((task, index) => {
                   return (
                     <button
                       key={task.id}
-                      className={`relative w-full px-7 py-6 cursor-pointer text-left ${
+                      className={`relative w-full px-7 py-6 cursor-pointer text-left transition-opacity duration-200 hover:opacity-100 group-hover:opacity-[0.32] hover:!opacity-100 ${
                         index !== filteredTasks.length - 1
                           ? "border-b border-border"
                           : ""
