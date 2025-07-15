@@ -1105,9 +1105,9 @@ export default function Home() {
                   return (
                     <button
                       key={task.id}
-                      className={`relative w-full px-7 py-6 hover:bg-[rgb(17_17_17_/_8%)] dark:hover:bg-[#242424] transition-all duration-200 cursor-pointer text-left ${
+                      className={`relative w-full px-7 py-6 cursor-pointer text-left ${
                         index !== filteredTasks.length - 1
-                          ? "border-b border-border hover:border-transparent"
+                          ? "border-b border-border"
                           : ""
                       }`}
                       onClick={() => router.push(`/task/${task.id}`)}
