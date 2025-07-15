@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTheme } from "@/components/theme-provider";
-import { Search, X, User, Moon, Sun, LogOut } from "lucide-react";
+import { Search, X, User, Moon, Sun, LogOut, Plus } from "lucide-react";
 import {
   IconMessageDots,
   IconCommand,
@@ -33,6 +33,13 @@ import {
 } from "@tabler/icons-react";
 import FlameGradientCSS from "@/components/flame-gradient-css";
 import LoadingSkeleton from "@/components/loading-skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Custom Badge Component
 const CustomBadge = React.forwardRef<
@@ -217,6 +224,7 @@ export default function Home() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
+  const [showWalletDialog, setShowWalletDialog] = useState(false);
   const { theme, setTheme } = useTheme();
 
   // Filter states - empty arrays mean "ALL" is selected
@@ -650,6 +658,38 @@ export default function Home() {
                           )}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
+                        {/* Wallet Section */}
+                        <DropdownMenuItem
+                          className="cursor-default rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Image
+                              src="/icon-metamask.svg"
+                              alt="MetaMask"
+                              width={16}
+                              height={16}
+                            />
+                            <span className="font-mono">0x09...d1cA</span>
+                          </div>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between"
+                          onClick={() => setShowWalletDialog(true)}
+                        >
+                          <span style={{ letterSpacing: "0.01em" }}>
+                            Add wallet
+                          </span>
+                          <Plus
+                            className="ml-2"
+                            style={{
+                              color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                              width: "16px",
+                              height: "16px",
+                            }}
+                            strokeWidth={1}
+                          />
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                           onClick={() => {
@@ -949,6 +989,38 @@ export default function Home() {
                         )}
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
+                      {/* Wallet Section */}
+                      <DropdownMenuItem
+                        className="cursor-default rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-2">
+                          <Image
+                            src="/icon-metamask.svg"
+                            alt="MetaMask"
+                            width={16}
+                            height={16}
+                          />
+                          <span className="font-mono">0x09...d1cA</span>
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal flex items-center justify-between"
+                        onClick={() => setShowWalletDialog(true)}
+                      >
+                        <span style={{ letterSpacing: "0.01em" }}>
+                          Add wallet
+                        </span>
+                        <Plus
+                          className="ml-2"
+                          style={{
+                            color: theme === "dark" ? "#5c5c5c" : "#b2b2b2",
+                            width: "16px",
+                            height: "16px",
+                          }}
+                          strokeWidth={1}
+                        />
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem
                         className="cursor-pointer rounded-none text-[14px] leading-[18px] font-normal"
                         onClick={() => {
@@ -1191,6 +1263,62 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Wallet Dialog */}
+      <Dialog open={showWalletDialog} onOpenChange={setShowWalletDialog}>
+        <DialogContent className="sm:max-w-[425px] rounded-[2px] bg-[#1a1a1a] border-border">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-normal">Link your wallet</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Link a wallet to your Sapien account
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-6 space-y-3">
+            <button
+              className="w-full p-4 rounded-lg border border-border bg-[#242424] hover:bg-[#2a2a2a] transition-colors flex items-center gap-3"
+              onClick={() => {
+                console.log("Connect MetaMask");
+                setShowWalletDialog(false);
+              }}
+            >
+              <Image
+                src="/icon-metamask.svg"
+                alt="MetaMask"
+                width={24}
+                height={24}
+              />
+              <span className="text-base">MetaMask</span>
+            </button>
+            <button
+              className="w-full p-4 rounded-lg border border-border bg-[#242424] hover:bg-[#2a2a2a] transition-colors flex items-center gap-3"
+              onClick={() => {
+                console.log("Connect Coinbase");
+                setShowWalletDialog(false);
+              }}
+            >
+              <div className="w-6 h-6 rounded-full bg-[#0052FF] flex items-center justify-center">
+                <div className="w-3 h-3 rounded-full bg-white"></div>
+              </div>
+              <span className="text-base">Coinbase</span>
+            </button>
+            <button
+              className="w-full p-4 rounded-lg border border-border bg-[#242424] hover:bg-[#2a2a2a] transition-colors flex items-center gap-3"
+              onClick={() => {
+                console.log("Connect WalletConnect");
+                setShowWalletDialog(false);
+              }}
+            >
+              <div className="w-6 h-6 rounded bg-[#3B99FC] flex items-center justify-center">
+                <span className="text-white font-bold text-xs">W</span>
+              </div>
+              <span className="text-base">Wallet Connect</span>
+            </button>
+          </div>
+          <div className="mt-6 flex items-center justify-center">
+            <span className="text-xs text-muted-foreground">Powered by Privy</span>
+          </div>
+        </DialogContent>
+      </Dialog>
     </TooltipProvider>
   );
 }
