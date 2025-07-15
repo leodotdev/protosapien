@@ -221,6 +221,50 @@ const tasks = [
     multiplier: 50,
     icon: IconCommand,
   },
+  {
+    id: 9,
+    title: "Plot Points",
+    description:
+      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    type: "QUALITY ASSESSMENT",
+    difficulty: "INTERMEDIATE",
+    languages: ["ENGLISH"],
+    multiplier: 50,
+    icon: IconChartDots3,
+  },
+  {
+    id: 10,
+    title: "Quick Scripts",
+    description:
+      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    type: "DATA COLLECTION",
+    difficulty: "EASY",
+    languages: ["普通话"],
+    multiplier: 50,
+    icon: IconScript,
+  },
+  {
+    id: 11,
+    title: "Gesture Set",
+    description:
+      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    type: "DATA ANNOTATION",
+    difficulty: "EXPERT",
+    languages: ["ENGLISH"],
+    multiplier: 5,
+    icon: IconHandMove,
+  },
+  {
+    id: 12,
+    title: "ChatCaps",
+    description:
+      "Review and correct chat transcripts, tagging emotions, or refining responses to ensure they're clear, accurate, and engaging.",
+    type: "DATA ANNOTATION",
+    difficulty: "EASY",
+    languages: ["MANDARIN"],
+    multiplier: 50,
+    icon: IconMessageDots,
+  },
 ];
 
 const filterCategories = [
