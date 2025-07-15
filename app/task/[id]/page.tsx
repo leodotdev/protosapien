@@ -181,7 +181,7 @@ export default function TaskPage() {
             <Button
               onClick={handleSubmit}
               disabled={selectedAnswer === null}
-              className="self-start px-8 py-3 rounded-[2px]"
+              className="self-start px-8 py-3 rounded-[2px] font-mono text-[14px] leading-[18px] uppercase"
             >
               {currentQuestion === questions.length - 1 ? "Complete" : "Submit"}
             </Button>
