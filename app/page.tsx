@@ -407,7 +407,10 @@ export default function Home() {
               <div className="lg:hidden">
                 <div className="flex items-center justify-between px-7 py-6">
                   <div className="flex flex-col gap-4">
-                    <div className="p-1">
+                    <button
+                      onClick={() => router.push("/")}
+                      className="p-1 cursor-pointer inline-block"
+                    >
                       <Image
                         src={
                           theme === "dark"
@@ -419,7 +422,7 @@ export default function Home() {
                         height={32}
                         className="h-6 w-6"
                       />
-                    </div>
+                    </button>
                     <div className="flex items-center gap-4">
                       <Button
                         variant="ghost"

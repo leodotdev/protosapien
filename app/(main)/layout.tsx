@@ -133,7 +133,10 @@ function MainLayoutContent({
           {/* Sidebar - Hidden on mobile */}
           <div className="hidden lg:flex w-64 border-r border-border flex-col">
             <div className="px-7 py-6">
-              <div className="p-1 cursor-pointer" onClick={() => router.push("/")}>
+              <button
+                onClick={() => router.push("/")}
+                className="p-1 cursor-pointer inline-block"
+              >
                 <Image
                   src={
                     theme === "dark" ? "/logo-light.svg" : "/logo-dark.svg"
@@ -143,7 +146,7 @@ function MainLayoutContent({
                   height={32}
                   className="h-6 w-6"
                 />
-              </div>
+              </button>
             </div>
             {/* Route-specific sidebar content */}
             {pathname === "/dashboard" && (
@@ -239,7 +242,10 @@ function MainLayoutContent({
               <div className="lg:hidden">
                 <div className="flex items-center justify-between px-7 py-6">
                   <div className="flex flex-col gap-4">
-                    <div className="p-1 cursor-pointer" onClick={() => router.push("/")}>
+                    <button
+                      onClick={() => router.push("/")}
+                      className="p-1 cursor-pointer inline-block"
+                    >
                       <Image
                         src={
                           theme === "dark"
@@ -251,7 +257,7 @@ function MainLayoutContent({
                         height={32}
                         className="h-6 w-6"
                       />
-                    </div>
+                    </button>
                     <div className="flex items-center gap-4">
                       <Button
                         variant="ghost"
