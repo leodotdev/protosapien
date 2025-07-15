@@ -133,7 +133,7 @@ function MainLayoutContent({
           {/* Sidebar - Hidden on mobile */}
           <div className="hidden lg:flex w-64 border-r border-border flex-col">
             <div className="px-7 py-6">
-              <div className="p-1">
+              <div className="p-1 cursor-pointer" onClick={() => router.push("/")}>
                 <Image
                   src={
                     theme === "dark" ? "/logo-light.svg" : "/logo-dark.svg"
@@ -239,7 +239,7 @@ function MainLayoutContent({
               <div className="lg:hidden">
                 <div className="flex items-center justify-between px-7 py-6">
                   <div className="flex flex-col gap-4">
-                    <div className="p-1">
+                    <div className="p-1 cursor-pointer" onClick={() => router.push("/")}>
                       <Image
                         src={
                           theme === "dark"
